@@ -15,5 +15,35 @@ namespace JournalAccountingBlanqui
         {
             InitializeComponent();
         }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtGdVBlanqUse_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
