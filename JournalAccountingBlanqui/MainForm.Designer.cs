@@ -38,15 +38,15 @@
             this.btnAdm = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.txBxSearchDate = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.txBxSearchNum = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.txBxSearchAdress = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.txBxSearchNArray = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.txBxSearchName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -118,15 +118,15 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.29293F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.13131F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.13131F));
-            this.tableLayoutPanel1.Controls.Add(this.textBox9, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txBxSearchDate, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label12, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox8, 4, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txBxSearchNum, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.label11, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox5, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txBxSearchAdress, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label10, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox7, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txBxSearchNArray, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.label9, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox6, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txBxSearchName, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.label8, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 25);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -136,13 +136,14 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(945, 64);
             this.tableLayoutPanel1.TabIndex = 35;
             // 
-            // textBox9
+            // txBxSearchDate
             // 
-            this.textBox9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox9.Location = new System.Drawing.Point(3, 35);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(118, 26);
-            this.textBox9.TabIndex = 10;
+            this.txBxSearchDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchDate.Location = new System.Drawing.Point(3, 35);
+            this.txBxSearchDate.Name = "txBxSearchDate";
+            this.txBxSearchDate.Size = new System.Drawing.Size(118, 26);
+            this.txBxSearchDate.TabIndex = 10;
+            this.txBxSearchDate.TextChanged += new System.EventHandler(this.TxBxSearchDate_TextChanged);
             // 
             // label12
             // 
@@ -154,13 +155,14 @@
             this.label12.TabIndex = 34;
             this.label12.Text = "№ бланка";
             // 
-            // textBox8
+            // txBxSearchNum
             // 
-            this.textBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox8.Location = new System.Drawing.Point(822, 35);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(120, 26);
-            this.textBox8.TabIndex = 14;
+            this.txBxSearchNum.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchNum.Location = new System.Drawing.Point(822, 35);
+            this.txBxSearchNum.Name = "txBxSearchNum";
+            this.txBxSearchNum.Size = new System.Drawing.Size(120, 26);
+            this.txBxSearchNum.TabIndex = 14;
+            this.txBxSearchNum.TextChanged += new System.EventHandler(this.TxBxSearchNum_TextChanged);
             // 
             // label11
             // 
@@ -172,13 +174,14 @@
             this.label11.TabIndex = 33;
             this.label11.Text = "№ наряда";
             // 
-            // textBox5
+            // txBxSearchAdress
             // 
-            this.textBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox5.Location = new System.Drawing.Point(127, 35);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(289, 26);
-            this.textBox5.TabIndex = 12;
+            this.txBxSearchAdress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchAdress.Location = new System.Drawing.Point(127, 35);
+            this.txBxSearchAdress.Name = "txBxSearchAdress";
+            this.txBxSearchAdress.Size = new System.Drawing.Size(289, 26);
+            this.txBxSearchAdress.TabIndex = 12;
+            this.txBxSearchAdress.TextChanged += new System.EventHandler(this.TxBxSearchAdress_TextChanged);
             // 
             // label10
             // 
@@ -190,13 +193,14 @@
             this.label10.TabIndex = 32;
             this.label10.Text = "Наименование бланка";
             // 
-            // textBox7
+            // txBxSearchNArray
             // 
-            this.textBox7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox7.Location = new System.Drawing.Point(698, 35);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(118, 26);
-            this.textBox7.TabIndex = 13;
+            this.txBxSearchNArray.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchNArray.Location = new System.Drawing.Point(698, 35);
+            this.txBxSearchNArray.Name = "txBxSearchNArray";
+            this.txBxSearchNArray.Size = new System.Drawing.Size(118, 26);
+            this.txBxSearchNArray.TabIndex = 13;
+            this.txBxSearchNArray.TextChanged += new System.EventHandler(this.TxBxSearchNArray_TextChanged);
             // 
             // label9
             // 
@@ -208,13 +212,14 @@
             this.label9.TabIndex = 31;
             this.label9.Text = "Место назначения";
             // 
-            // textBox6
+            // txBxSearchName
             // 
-            this.textBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox6.Location = new System.Drawing.Point(422, 35);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(270, 26);
-            this.textBox6.TabIndex = 11;
+            this.txBxSearchName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchName.Location = new System.Drawing.Point(422, 35);
+            this.txBxSearchName.Name = "txBxSearchName";
+            this.txBxSearchName.Size = new System.Drawing.Size(270, 26);
+            this.txBxSearchName.TabIndex = 11;
+            this.txBxSearchName.TextChanged += new System.EventHandler(this.TxBxSearchName_TextChanged);
             // 
             // label8
             // 
@@ -235,6 +240,7 @@
             this.btnReset.TabIndex = 15;
             this.btnReset.Text = "Сбросить";
             this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
             // groupBox4
             // 
@@ -282,7 +288,7 @@
             this.dtGdVBlanqUse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dtGdVBlanqUse.Size = new System.Drawing.Size(1046, 209);
             this.dtGdVBlanqUse.TabIndex = 28;
-            this.dtGdVBlanqUse.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGdVBlanqUse_CellEnter);
+            this.dtGdVBlanqUse.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DtGdVBlanqUse_CellEnter);
             // 
             // Column0
             // 
@@ -363,7 +369,7 @@
             this.btnModify.TabIndex = 36;
             this.btnModify.Text = "Изменить запись";
             this.btnModify.UseVisualStyleBackColor = true;
-            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
+            this.btnModify.Click += new System.EventHandler(this.BtnModify_Click);
             // 
             // btnPrint
             // 
@@ -374,7 +380,7 @@
             this.btnPrint.TabIndex = 40;
             this.btnPrint.Text = "Печать списка";
             this.btnPrint.UseVisualStyleBackColor = true;
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            this.btnPrint.Click += new System.EventHandler(this.BtnPrint_Click);
             // 
             // btnAdd
             // 
@@ -385,7 +391,7 @@
             this.btnAdd.TabIndex = 35;
             this.btnAdd.Text = "Добавить запись";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // txBxN_Array
             // 
@@ -486,6 +492,7 @@
             this.btnClose.TabIndex = 39;
             this.btnClose.Text = "Закрыть";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // label5
             // 
@@ -507,7 +514,7 @@
             this.btnCancel.TabIndex = 35;
             this.btnCancel.Text = "Отменить";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnSave
             // 
@@ -518,7 +525,7 @@
             this.btnSave.TabIndex = 35;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // cmBxName
             // 
@@ -591,6 +598,8 @@
             this.MinimumSize = new System.Drawing.Size(1095, 690);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -606,10 +615,10 @@
         private System.Windows.Forms.Button btnAdm;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox txBxSearchDate;
+        private System.Windows.Forms.TextBox txBxSearchNum;
+        private System.Windows.Forms.TextBox txBxSearchNArray;
+        private System.Windows.Forms.TextBox txBxSearchName;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
@@ -625,7 +634,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox txBxSearchAdress;
         private System.Windows.Forms.Button btnModify;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Button btnAdd;

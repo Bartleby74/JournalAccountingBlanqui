@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PropsFields xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<TextFileDir>Server2016t01:D:\Data\JUSTICE\BLANQUI.FDB</TextFileDir>
+	<TextUserID>SYSDBA</TextUserID>
+	<TextPassword>m</TextPassword>
+	<TextLogin>Konnov</TextLogin>
+	<TextLoginPassword>5449</TextLoginPassword>
+</PropsFields>
