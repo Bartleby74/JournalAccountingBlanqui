@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -69,6 +70,25 @@ namespace JournalAccountingBlanqui
                 }
 
                 return control;
+            }
+        }
+
+        internal object UpdSpisokFullUser(int userID)
+        {
+            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            {   //Запрос обновлён
+                FbCommand command = con.CreateCommand();
+                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                DataSet dataset = new DataSet();
+                adapter.Fill(dataset);
+                con.Close();
+                if (dataset.Tables.Count == 0)
+                {
+                    MessageBox.Show("Ошибка, результат не содежит строк");
+                }
+                bindingSource.DataSource = dataset.Tables[0];
+                return bindingSource;
             }
         }
 
