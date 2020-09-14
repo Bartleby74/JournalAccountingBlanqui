@@ -18,12 +18,12 @@ namespace JournalAccountingBlanqui
             txBxPass.UseSystemPasswordChar = true;
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             PerformInput();
         }
@@ -45,17 +45,17 @@ namespace JournalAccountingBlanqui
             }
         }
 
-        private void picBxShow_MouseMove(object sender, MouseEventArgs e)
+        private void PicBxShow_MouseMove(object sender, MouseEventArgs e)
         {
             txBxPass.UseSystemPasswordChar = false;
         }
 
-        private void picBxShow_MouseLeave(object sender, EventArgs e)
+        private void PicBxShow_MouseLeave(object sender, EventArgs e)
         {
             txBxPass.UseSystemPasswordChar = true;
         }
 
-        private void txBxPass_KeyDown(object sender, KeyEventArgs e)
+        private void TxBxPass_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

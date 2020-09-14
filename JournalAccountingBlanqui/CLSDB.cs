@@ -36,16 +36,8 @@ namespace JournalAccountingBlanqui
                 {
                     con.Open();
                     FbCommand command = new FbCommand(@"SELECT USERS.ID, USERS.FIO, USERS.OFFICE, USERS.STATUS FROM USERS WHERE USERS.LOGIN = @LOGIN AND USERS.PASSW = @PASSWORD", con);
-                    FbParameter param = new FbParameter("@LOGIN", login)
-                    {
-                        FbDbType = FbDbType.Text
-                    };
-                    command.Parameters.Add(param);
-                    param = new FbParameter("@PASSWORD", password)
-                    {
-                        FbDbType = FbDbType.Text
-                    };
-                    command.Parameters.Add(param);
+                    command.Parameters.Add("@LOGIN", FbDbType.Text).Value = login;
+                    command.Parameters.Add("@PASSWORD", FbDbType.Text).Value = password;
 
                     using (var dataReader = command.ExecuteReader())
                     {
@@ -62,7 +54,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Неудаётся подключиться к базе данных: " + ex, "Журнал учёта бланков", MessageBoxButtons.OKCancel);
+                    MessageBox.Show("Неудаётся подключиться к базе данных: " + ex, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OKCancel);
                 }
                 finally
                 {
@@ -73,12 +65,49 @@ namespace JournalAccountingBlanqui
             }
         }
 
+        /// <summary>
+        /// Возвращает список использованных бланков пользователем по его ID
+        /// </summary>
+        /// <param name="userID">ID пользователя</param>
+        /// <returns></returns>
         internal object UpdSpisokFullUser(int userID)
         {
             using (FbConnection con = new FbConnection(props.ConnectStr()))
             {   //Запрос обновлён
                 FbCommand command = con.CreateCommand();
                 command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                DataSet dataset = new DataSet();
+                adapter.Fill(dataset);
+                con.Close();
+                if (dataset.Tables.Count == 0)
+                {
+                    MessageBox.Show("Ошибка, результат не содежит строк");
+                }
+                bindingSource.DataSource = dataset.Tables[0];
+                return bindingSource;
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список использованных бланков пользователем по его ID
+        /// </summary>
+        /// <param name="userID">ID пользователя</param>
+        /// <param name="dateotpr">Дата использования бланка</param>
+        /// <param name="adress">Адрес направления</param>
+        /// <param name="nblank">Название бланка</param>
+        /// <param name="numarray">Номер наряда</param>
+        /// <param name="num">Номер бланка</param>
+        /// <returns></returns>
+        internal object UpdSpisokSearchUser(int userID, string dateotpr, string adress, string nblank, string numarray, string num)
+        {
+            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            {   //Запрос обновлён
+                FbCommand command = con.CreateCommand();
+                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM, JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE (JOURNAL_OF_USE.FIO = @IDFIO) AND (JOURNAL_OF_USE.DATEUSE LIKE '%" + dateotpr + "%') AND (UPPER(_WIN1251''||DESTINATION_ADRESS.ADRESS) LIKE UPPER(_WIN1251''||'%" + adress + "%')) AND (UPPER(_WIN1251''||NAME_BLANKS.NBLANK) LIKE UPPER(_WIN1251''||'%" + nblank + "%')) AND (JOURNAL_OF_USE.N_ARRAY LIKE '%" + numarray + "%') AND (JOURNAL_OF_USE.NUM LIKE '%" + num + "%') ORDER BY JOURNAL_OF_USE.ID DESC";
+                command.Parameters.Add("@IDFIO", FbDbType.VarChar).Value = userID;
+                
+
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
@@ -271,8 +300,9 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = new FbCommand(@"UPDATE Journal_Of_Use SET Journal_Of_Use.DATA = @DATEOTPR, Journal_Of_Use.BLANK_NAME = (SELECT NAME_BLANKS.ID WHERE NAME_BLANKS.NBLANK = @NBLANK), Journal_Of_Use.ID_ADRESS = " + idadress + ", Journal_Of_Use.N_ARRAY = @NUMARRAY, Journal_Of_Use.NUM = @NUMBLANK WHERE Journal_Of_Use.ID = @IDJOURNAL");
+                    FbCommand command = new FbCommand(@"UPDATE Journal_Of_Use SET Journal_Of_Use.DATA = @DATEOTPR, Journal_Of_Use.BLANK_NAME = (SELECT NAME_BLANKS.ID WHERE NAME_BLANKS.NBLANK = @NBLANK), Journal_Of_Use.ID_ADRESS = @IDADRESS, Journal_Of_Use.N_ARRAY = @NUMARRAY, Journal_Of_Use.NUM = @NUMBLANK WHERE Journal_Of_Use.ID = @IDJOURNAL");
                     command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = idjournal;
+                    command.Parameters.Add("@IDADRESS", FbDbType.Integer).Value = idadress;
                     command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
                     command.Parameters.Add("@NBLANK", FbDbType.VarChar).Value = nblank;
                     command.Parameters.Add("@NUMARRAY", FbDbType.VarChar).Value = numarray;

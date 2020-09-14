@@ -35,6 +35,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnAdm = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -90,7 +91,7 @@
             this.btnAdm.Location = new System.Drawing.Point(883, 62);
             this.btnAdm.Name = "btnAdm";
             this.btnAdm.Size = new System.Drawing.Size(184, 35);
-            this.btnAdm.TabIndex = 48;
+            this.btnAdm.TabIndex = 17;
             this.btnAdm.Text = "Администрирование";
             this.btnAdm.UseVisualStyleBackColor = true;
             // 
@@ -142,7 +143,7 @@
             this.txBxSearchDate.Location = new System.Drawing.Point(3, 35);
             this.txBxSearchDate.Name = "txBxSearchDate";
             this.txBxSearchDate.Size = new System.Drawing.Size(118, 26);
-            this.txBxSearchDate.TabIndex = 10;
+            this.txBxSearchDate.TabIndex = 2;
             this.txBxSearchDate.TextChanged += new System.EventHandler(this.TxBxSearchDate_TextChanged);
             // 
             // label12
@@ -161,7 +162,7 @@
             this.txBxSearchNum.Location = new System.Drawing.Point(822, 35);
             this.txBxSearchNum.Name = "txBxSearchNum";
             this.txBxSearchNum.Size = new System.Drawing.Size(120, 26);
-            this.txBxSearchNum.TabIndex = 14;
+            this.txBxSearchNum.TabIndex = 6;
             this.txBxSearchNum.TextChanged += new System.EventHandler(this.TxBxSearchNum_TextChanged);
             // 
             // label11
@@ -180,7 +181,7 @@
             this.txBxSearchAdress.Location = new System.Drawing.Point(127, 35);
             this.txBxSearchAdress.Name = "txBxSearchAdress";
             this.txBxSearchAdress.Size = new System.Drawing.Size(289, 26);
-            this.txBxSearchAdress.TabIndex = 12;
+            this.txBxSearchAdress.TabIndex = 3;
             this.txBxSearchAdress.TextChanged += new System.EventHandler(this.TxBxSearchAdress_TextChanged);
             // 
             // label10
@@ -199,7 +200,7 @@
             this.txBxSearchNArray.Location = new System.Drawing.Point(698, 35);
             this.txBxSearchNArray.Name = "txBxSearchNArray";
             this.txBxSearchNArray.Size = new System.Drawing.Size(118, 26);
-            this.txBxSearchNArray.TabIndex = 13;
+            this.txBxSearchNArray.TabIndex = 5;
             this.txBxSearchNArray.TextChanged += new System.EventHandler(this.TxBxSearchNArray_TextChanged);
             // 
             // label9
@@ -218,7 +219,7 @@
             this.txBxSearchName.Location = new System.Drawing.Point(422, 35);
             this.txBxSearchName.Name = "txBxSearchName";
             this.txBxSearchName.Size = new System.Drawing.Size(270, 26);
-            this.txBxSearchName.TabIndex = 11;
+            this.txBxSearchName.TabIndex = 4;
             this.txBxSearchName.TextChanged += new System.EventHandler(this.TxBxSearchName_TextChanged);
             // 
             // label8
@@ -237,7 +238,7 @@
             this.btnReset.Location = new System.Drawing.Point(955, 56);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(93, 35);
-            this.btnReset.TabIndex = 15;
+            this.btnReset.TabIndex = 7;
             this.btnReset.Text = "Сбросить";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
@@ -287,7 +288,7 @@
             this.dtGdVBlanqUse.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dtGdVBlanqUse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dtGdVBlanqUse.Size = new System.Drawing.Size(1046, 209);
-            this.dtGdVBlanqUse.TabIndex = 28;
+            this.dtGdVBlanqUse.TabIndex = 1;
             this.dtGdVBlanqUse.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DtGdVBlanqUse_CellEnter);
             // 
             // Column0
@@ -366,7 +367,7 @@
             this.btnModify.Location = new System.Drawing.Point(761, 207);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(150, 35);
-            this.btnModify.TabIndex = 36;
+            this.btnModify.TabIndex = 10;
             this.btnModify.Text = "Изменить запись";
             this.btnModify.UseVisualStyleBackColor = true;
             this.btnModify.Click += new System.EventHandler(this.BtnModify_Click);
@@ -377,7 +378,7 @@
             this.btnPrint.Location = new System.Drawing.Point(917, 207);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(150, 35);
-            this.btnPrint.TabIndex = 40;
+            this.btnPrint.TabIndex = 16;
             this.btnPrint.Text = "Печать списка";
             this.btnPrint.UseVisualStyleBackColor = true;
             this.btnPrint.Click += new System.EventHandler(this.BtnPrint_Click);
@@ -388,7 +389,7 @@
             this.btnAdd.Location = new System.Drawing.Point(605, 207);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(150, 35);
-            this.btnAdd.TabIndex = 35;
+            this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Добавить запись";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
@@ -400,7 +401,7 @@
             this.txBxN_Array.Location = new System.Drawing.Point(140, 184);
             this.txBxN_Array.Name = "txBxN_Array";
             this.txBxN_Array.Size = new System.Drawing.Size(148, 26);
-            this.txBxN_Array.TabIndex = 33;
+            this.txBxN_Array.TabIndex = 14;
             // 
             // label7
             // 
@@ -418,7 +419,7 @@
             this.txBxNum.Location = new System.Drawing.Point(140, 216);
             this.txBxNum.Name = "txBxNum";
             this.txBxNum.Size = new System.Drawing.Size(148, 26);
-            this.txBxNum.TabIndex = 34;
+            this.txBxNum.TabIndex = 15;
             // 
             // label6
             // 
@@ -463,7 +464,7 @@
             this.dateTimePickerDispatch.MinDate = new System.DateTime(2009, 4, 8, 0, 0, 0, 0);
             this.dateTimePickerDispatch.Name = "dateTimePickerDispatch";
             this.dateTimePickerDispatch.Size = new System.Drawing.Size(200, 26);
-            this.dateTimePickerDispatch.TabIndex = 30;
+            this.dateTimePickerDispatch.TabIndex = 11;
             // 
             // label2
             // 
@@ -489,7 +490,7 @@
             this.btnClose.Location = new System.Drawing.Point(956, 604);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(111, 35);
-            this.btnClose.TabIndex = 39;
+            this.btnClose.TabIndex = 8;
             this.btnClose.Text = "Закрыть";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
@@ -539,20 +540,19 @@
             this.cmBxName.Location = new System.Drawing.Point(203, 116);
             this.cmBxName.Name = "cmBxName";
             this.cmBxName.Size = new System.Drawing.Size(864, 28);
-            this.cmBxName.TabIndex = 50;
+            this.cmBxName.TabIndex = 12;
             // 
             // cmBxAdress
             // 
             this.cmBxAdress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmBxAdress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmBxAdress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cmBxAdress.Enabled = false;
             this.cmBxAdress.FormattingEnabled = true;
             this.cmBxAdress.Location = new System.Drawing.Point(203, 150);
             this.cmBxAdress.Name = "cmBxAdress";
             this.cmBxAdress.Size = new System.Drawing.Size(864, 28);
-            this.cmBxAdress.TabIndex = 51;
+            this.cmBxAdress.TabIndex = 13;
             // 
             // label13
             // 
@@ -594,12 +594,14 @@
             this.Controls.Add(this.btnModify);
             this.Controls.Add(this.btnSave);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(1095, 690);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

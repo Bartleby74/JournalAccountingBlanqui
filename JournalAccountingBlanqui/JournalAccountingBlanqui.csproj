@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Arch.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClassWord">
       <HintPath>..\..\ClassWord.dll</HintPath>
@@ -92,7 +95,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Setting.xml" />
+    <Content Include="Arch.ico" />
+    <Content Include="Setting.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

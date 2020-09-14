@@ -45,10 +45,10 @@
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(210, 35);
-            this.btnLogin.TabIndex = 0;
+            this.btnLogin.TabIndex = 2;
             this.btnLogin.Text = "Авторизация";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // btnCancel
             // 
@@ -56,10 +56,10 @@
             this.btnCancel.Location = new System.Drawing.Point(230, 78);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(143, 35);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // label1
             // 
@@ -86,7 +86,8 @@
             this.txBxLogin.Location = new System.Drawing.Point(85, 12);
             this.txBxLogin.Name = "txBxLogin";
             this.txBxLogin.Size = new System.Drawing.Size(288, 26);
-            this.txBxLogin.TabIndex = 4;
+            this.txBxLogin.TabIndex = 0;
+            this.txBxLogin.Text = "Konnov";
             // 
             // txBxPass
             // 
@@ -95,8 +96,9 @@
             this.txBxPass.Location = new System.Drawing.Point(85, 44);
             this.txBxPass.Name = "txBxPass";
             this.txBxPass.Size = new System.Drawing.Size(288, 26);
-            this.txBxPass.TabIndex = 5;
-            this.txBxPass.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txBxPass_KeyDown);
+            this.txBxPass.TabIndex = 1;
+            this.txBxPass.Text = "5449";
+            this.txBxPass.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxBxPass_KeyDown);
             // 
             // picBxShow
             // 
@@ -106,13 +108,14 @@
             this.picBxShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picBxShow.ErrorImage = null;
             this.picBxShow.InitialImage = null;
-            this.picBxShow.Location = new System.Drawing.Point(337, 44);
+            this.picBxShow.Location = new System.Drawing.Point(337, 45);
+            this.picBxShow.Margin = new System.Windows.Forms.Padding(0);
             this.picBxShow.Name = "picBxShow";
-            this.picBxShow.Size = new System.Drawing.Size(36, 26);
+            this.picBxShow.Size = new System.Drawing.Size(35, 24);
             this.picBxShow.TabIndex = 6;
             this.picBxShow.TabStop = false;
-            this.picBxShow.MouseLeave += new System.EventHandler(this.picBxShow_MouseLeave);
-            this.picBxShow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picBxShow_MouseMove);
+            this.picBxShow.MouseLeave += new System.EventHandler(this.PicBxShow_MouseLeave);
+            this.picBxShow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicBxShow_MouseMove);
             // 
             // Authorization
             // 
@@ -134,7 +137,10 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(401, 164);
             this.Name = "Authorization";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Авторизация пользователя";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.picBxShow)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
