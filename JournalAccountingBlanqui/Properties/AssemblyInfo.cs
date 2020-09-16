@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
 [assembly: AssemblyTitle("JournalAccountingBlanqui")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Журнал учёта бланков и распорядительных документов суда с воспроизведением Государственного герба Российской Федерации")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("JournalAccountingBlanqui")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright © Коннов В.В., 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

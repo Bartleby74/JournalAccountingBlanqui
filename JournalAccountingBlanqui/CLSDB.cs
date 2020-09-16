@@ -291,7 +291,7 @@ namespace JournalAccountingBlanqui
         /// <param name="numarray">Номер наряда</param>
         /// <param name="num">Номер бланка</param>
         /// <returns></returns>
-        internal bool BlanqSave(int idjournal, DateTime dateotpr, string nblank, string adress, string numarray, int num)
+        internal bool BlanqSave(int idjournal, DateTime dateotpr, string nblank, string adress, string numarray, string num)
         {
             bool p = false;
             int idadress = ReturnIdAdress(adress);
@@ -306,7 +306,7 @@ namespace JournalAccountingBlanqui
                     command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
                     command.Parameters.Add("@NBLANK", FbDbType.VarChar).Value = nblank;
                     command.Parameters.Add("@NUMARRAY", FbDbType.VarChar).Value = numarray;
-                    command.Parameters.Add("@NUMBLANK", FbDbType.Integer).Value = num;
+                    command.Parameters.Add("@NUMBLANK", FbDbType.Integer).Value = Int32.Parse(num);
                     command.Parameters.Add("@PRINT", FbDbType.VarChar).Value = "FALSE";
 
                     command.ExecuteScalar();

@@ -11,7 +11,8 @@ namespace JournalAccountingBlanqui
 {
     public partial class MainForm : Form
     {
-        PropsFields propsFields = new PropsFields(); //экземпляр класса с настройками
+        //PropsFields propsFields = new PropsFields(); //экземпляр класса с настройками
+        Props props = new Props(); //экземпляр класса с настройками
         CLSDB clsdb = new CLSDB();
         public int idtab = 0;
         int rowID = 0;
@@ -57,13 +58,13 @@ namespace JournalAccountingBlanqui
                     return;
                 }
 
-                if (!clsdb.GetBlanqUser(propsFields.UserID, cmBxName.Text, txBxNum.Text))
+                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text))
                 {
                     MessageBox.Show("Бланк с таким номером не выдавался данному сотруднику. Введите другой номер.");
                     return;
                 }
 
-                if (clsdb.AddBlank(dateTimePickerDispatch.Value, propsFields.UserID, cmBxAdress.Text, cmBxName.Text, txBxN_Array.Text, txBxNum.Text))
+                if (clsdb.AddBlank(dateTimePickerDispatch.Value, props.Fields.UserID, cmBxAdress.Text, cmBxName.Text, txBxN_Array.Text, txBxNum.Text))
                 {
                     rowID = 0;
                     dtGdVBlanqUse.Rows.Add(1);
@@ -83,7 +84,13 @@ namespace JournalAccountingBlanqui
                     return;
                 }
 
-                if (!clsdb.GetBlanqUser(propsFields.UserID, cmBxName.Text, txBxNum.Text))
+                if (clsdb.GetPrintedNomBlanq(cmBxName.Text, txBxNum.Text) == "TRUE")
+                {
+                    MessageBox.Show("Невозможно внести изменения в журнал.\nИнформация о движении бланка была распечатана на бумажном носителе.\nВведите другой номер или измените название бланка.");
+                    return;
+                }
+
+                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text))
                 {
                     MessageBox.Show("Бланк с таким номером не выдавался данному сотруднику. Введите другой номер.");
                     return;
@@ -95,13 +102,7 @@ namespace JournalAccountingBlanqui
                     return;
                 }
 
-                if (clsdb.GetPrintedNomBlanq(cmBxName.Text, txBxNum.Text) == "TRUE")
-                {
-                    MessageBox.Show("Невозможно внести изменения в журнал.\nИнформация о движении бланка была распечатана на бумажном носителе.\nВведите другой номер или измените название бланка.");
-                    return;
-                }
-
-                if (clsdb.BlanqSave(idtab, dateTimePickerDispatch.Value, cmBxName.Text, cmBxAdress.Text, txBxN_Array.Text, Int32.Parse(txBxNum.Text)))
+                if (clsdb.BlanqSave(idtab, dateTimePickerDispatch.Value, cmBxName.Text, cmBxAdress.Text, txBxN_Array.Text, txBxNum.Text))
                 {
                     dtGdVBlanqUse.Rows[rowID].Cells[0].Value = idtab;
                     dtGdVBlanqUse.Rows[rowID].Cells[1].Value = dateTimePickerDispatch.Value;
@@ -144,6 +145,7 @@ namespace JournalAccountingBlanqui
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            props.ReadXml();
             using (Authorization Form = new Authorization())
             {
                 Form.ShowDialog();
@@ -153,8 +155,8 @@ namespace JournalAccountingBlanqui
             btnSave.Visible = false;
             SetAutoComplete();
 
-            lblFIO.Text = propsFields.UserFIO;
-            if (propsFields.UserStatus == "admin")
+            lblFIO.Text = props.Fields.UserFIO;
+            if (props.Fields.UserStatus == "admin")
             {
                 btnAdm.Visible = true;
             }
@@ -164,7 +166,7 @@ namespace JournalAccountingBlanqui
 
         private void UpdSpisok()
         {
-            dtGdVBlanqUse.DataSource = clsdb.UpdSpisokFullUser(propsFields.UserID);
+            dtGdVBlanqUse.DataSource = clsdb.UpdSpisokFullUser(props.Fields.UserID);
 
             if (dtGdVBlanqUse.RowCount > 0)
             {
@@ -185,7 +187,7 @@ namespace JournalAccountingBlanqui
 
         private void UpdSearchSpisok()
         {
-            dtGdVBlanqUse.DataSource = clsdb.UpdSpisokSearchUser(propsFields.UserID, txBxSearchDate.Text, txBxSearchAdress.Text, txBxSearchName.Text, txBxSearchNArray.Text, txBxSearchNum.Text);
+            dtGdVBlanqUse.DataSource = clsdb.UpdSpisokSearchUser(props.Fields.UserID, txBxSearchDate.Text, txBxSearchAdress.Text, txBxSearchName.Text, txBxSearchNArray.Text, txBxSearchNum.Text);
 
             if (dtGdVBlanqUse.RowCount > 0)
             {

@@ -11,11 +11,11 @@ namespace JournalAccountingBlanqui
 {
     public partial class Authorization : Form
     {
-        CLSDB clsdb = new CLSDB();
+        CLSDB clsdb = new CLSDB(); 
+        Props props = new Props(); //экземпляр класса с настройками
         public Authorization()
         {
-            InitializeComponent(); 
-            txBxPass.UseSystemPasswordChar = true;
+            InitializeComponent();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -33,6 +33,16 @@ namespace JournalAccountingBlanqui
             bool a = clsdb.SqlPassword(txBxLogin.Text, txBxPass.Text);
             if (a)
             {
+                if (chckBxRemember.Checked == true)
+                {
+                    props.Fields.UserLogin = txBxLogin.Text;
+                }
+                else
+                {
+                    props.Fields.UserLogin = "";
+                }
+                props.WriteXml();
+
                 using (MainForm Form = new MainForm())
                 {
                     Close();
@@ -61,6 +71,22 @@ namespace JournalAccountingBlanqui
             {
                 PerformInput();
             }
+        }
+
+        private void Authorization_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Application.Exit();
+        }
+
+        private void Authorization_Load(object sender, EventArgs e)
+        {
+            props.ReadXml();
+            txBxPass.UseSystemPasswordChar = true;
+            txBxLogin.Text = props.Fields.UserLogin;
+            if (txBxLogin.Text.Length > 0)
+                chckBxRemember.Checked = true;
+            else
+                chckBxRemember.Checked = false;
         }
     }
 }
