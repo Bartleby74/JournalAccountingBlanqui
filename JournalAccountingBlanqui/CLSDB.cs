@@ -12,7 +12,7 @@ namespace JournalAccountingBlanqui
     {
         Props props = new Props(); //экземпляр класса с настройками
         PropsFields propsFields = new PropsFields(); //экземпляр класса с настройками 
-        private BindingSource bindingSource = new BindingSource();
+        private DataTable bindingSource = new DataTable();
 
         private string pathSaveSetting { get { return Application.StartupPath + "\\Setting.xml"; } }
         static string ConnectFileBase = Application.StartupPath;
@@ -70,12 +70,12 @@ namespace JournalAccountingBlanqui
         /// </summary>
         /// <param name="userID">ID пользователя</param>
         /// <returns></returns>
-        internal object UpdSpisokFullUser(int userID)
+        internal DataTable UpdSpisokFullUser(int userID)
         {
             using (FbConnection con = new FbConnection(props.ConnectStr()))
             {   //Запрос обновлён
                 FbCommand command = con.CreateCommand();
-                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
+                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
@@ -84,7 +84,7 @@ namespace JournalAccountingBlanqui
                 {
                     MessageBox.Show("Ошибка, результат не содежит строк");
                 }
-                bindingSource.DataSource = dataset.Tables[0];
+                bindingSource = dataset.Tables[0];
                 return bindingSource;
             }
         }
@@ -104,7 +104,7 @@ namespace JournalAccountingBlanqui
             using (FbConnection con = new FbConnection(props.ConnectStr()))
             {   //Запрос обновлён
                 FbCommand command = con.CreateCommand();
-                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM, JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE (JOURNAL_OF_USE.FIO = @IDFIO) AND (JOURNAL_OF_USE.DATEUSE LIKE '%" + dateotpr + "%') AND (UPPER(_WIN1251''||DESTINATION_ADRESS.ADRESS) LIKE UPPER(_WIN1251''||'%" + adress + "%')) AND (UPPER(_WIN1251''||NAME_BLANKS.NBLANK) LIKE UPPER(_WIN1251''||'%" + nblank + "%')) AND (JOURNAL_OF_USE.N_ARRAY LIKE '%" + numarray + "%') AND (JOURNAL_OF_USE.NUM LIKE '%" + num + "%') ORDER BY JOURNAL_OF_USE.ID DESC";
+                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE (JOURNAL_OF_USE.FIO = @IDFIO) AND (JOURNAL_OF_USE.DATEUSE LIKE '%" + dateotpr + "%') AND (UPPER(_WIN1251''||DESTINATION_ADRESS.ADRESS) LIKE UPPER(_WIN1251''||'%" + adress + "%')) AND (UPPER(_WIN1251''||NAME_BLANKS.NBLANK) LIKE UPPER(_WIN1251''||'%" + nblank + "%')) AND (JOURNAL_OF_USE.N_ARRAY LIKE '%" + numarray + "%') AND (JOURNAL_OF_USE.NUM_BLANK LIKE '%" + num + "%') ORDER BY JOURNAL_OF_USE.ID DESC";
                 command.Parameters.Add("@IDFIO", FbDbType.VarChar).Value = userID;
                 
 
@@ -116,7 +116,7 @@ namespace JournalAccountingBlanqui
                 {
                     MessageBox.Show("Ошибка, результат не содежит строк");
                 }
-                bindingSource.DataSource = dataset.Tables[0];
+                bindingSource = dataset.Tables[0];
                 return bindingSource;
             }
         }
@@ -135,7 +135,7 @@ namespace JournalAccountingBlanqui
             {
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.ID FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + name + "' AND JOURNAL_OF_USE.NUM = " + Int32.Parse(nn) + "";
+                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.ID FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + name + "' AND JOURNAL_OF_USE.NUM_BLANK = " + Int32.Parse(nn) + "";
                 FbDataReader dr = sqlReq.ExecuteReader();
 
                 m = dr.Read();
@@ -161,7 +161,7 @@ namespace JournalAccountingBlanqui
             {
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = " + name + " AND JOURNAL_OF_USE.NUM = " + nn + "";
+                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + name + "' AND JOURNAL_OF_USE.NUM_BLANK = " + nn + "";
                 FbDataReader dr = sqlReq.ExecuteReader();
 
                 m = dr.Read();
@@ -237,14 +237,22 @@ namespace JournalAccountingBlanqui
         internal bool GetBlanqUser(int iduser, string namebl, string num)
         {
             bool m = false;
-
+            int numint = Convert.ToInt32(num), a = 0, b = 0;
             using (FbConnection con = new FbConnection(props.ConnectStr()))
             {
                 con.Open();
-                FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT JOURNAL_ISSUANCE.ID FROM JOURNAL_ISSUANCE INNER JOIN USERS ON (JOURNAL_ISSUANCE.FIO = USERS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_ISSUANCE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + namebl + "' AND USERS.ID = " + iduser + " AND JOURNAL_ISSUANCE.FIRST_BLANK <= '" + num + "' AND JOURNAL_ISSUANCE.LAST_BLANK >= '" + num + "'";
-                FbDataReader dr = sqlReq.ExecuteReader();
-                m = dr.Read();
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_ISSUANCE.FIRST_BLANK, JOURNAL_ISSUANCE.LAST_BLANK FROM NAME_BLANKS INNER JOIN JOURNAL_ISSUANCE ON (NAME_BLANKS.ID = JOURNAL_ISSUANCE.BLANK_NAME) INNER JOIN USERS ON (JOURNAL_ISSUANCE.FIO = USERS.ID) WHERE ((NAME_BLANKS.NBLANK = @NBLANK) AND (USERS.ID = @IDUSER))", con);
+                command.Parameters.Add("@NBLANK", FbDbType.Text).Value = namebl;
+                command.Parameters.Add("@IDUSER", FbDbType.Integer).Value = iduser;
+                FbDataReader dr = command.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    a = dr.GetInt32(0);
+                    b = dr.GetInt32(1);
+                    if (numint >= a && numint <= b)
+                    { m = true; break; }
+                }
                 con.Close();
             }
             return m;
@@ -300,7 +308,7 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = new FbCommand(@"UPDATE Journal_Of_Use SET Journal_Of_Use.DATA = @DATEOTPR, Journal_Of_Use.BLANK_NAME = (SELECT NAME_BLANKS.ID WHERE NAME_BLANKS.NBLANK = @NBLANK), Journal_Of_Use.ID_ADRESS = @IDADRESS, Journal_Of_Use.N_ARRAY = @NUMARRAY, Journal_Of_Use.NUM = @NUMBLANK WHERE Journal_Of_Use.ID = @IDJOURNAL");
+                    FbCommand command = new FbCommand(@"UPDATE JOURNAL_OF_USE SET JOURNAL_OF_USE.DATEUSE = @DATEOTPR, JOURNAL_OF_USE.BLANK_NAME = (SELECT NAME_BLANKS.ID FROM NAME_BLANKS WHERE NAME_BLANKS.NBLANK = @NBLANK), JOURNAL_OF_USE.ID_ADRESS = @IDADRESS, JOURNAL_OF_USE.N_ARRAY = @NUMARRAY, JOURNAL_OF_USE.NUM_BLANK = @NUMBLANK WHERE JOURNAL_OF_USE.ID = @IDJOURNAL", con);
                     command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = idjournal;
                     command.Parameters.Add("@IDADRESS", FbDbType.Integer).Value = idadress;
                     command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
@@ -316,7 +324,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось добавить Новый адрес. Подробности ", error.Message, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     p = false;
                 }
             }
@@ -351,7 +359,7 @@ namespace JournalAccountingBlanqui
                     try
                     {
                         con.Open();
-                        FbCommand command = new FbCommand(@"INSERT INTO JOURNAL_OF_USE(ID, DATEUSE, FIO, ID_ADRESS, BLANK_NAME, NUM, N_ARRAY, PRINT) VALUES(@IDJOURNAL, @DATEOTPR, '" + idUser + "', '" + idadress + "', '" + idnblank + "', @NUMBLANK, '" + nomarray + "', @PRINT)", con);
+                        FbCommand command = new FbCommand(@"INSERT INTO JOURNAL_OF_USE(ID, DATEUSE, FIO, ID_ADRESS, BLANK_NAME, NUM_BLANK, N_ARRAY, PRINT) VALUES(@IDJOURNAL, @DATEOTPR, '" + idUser + "', '" + idadress + "', '" + idnblank + "', @NUMBLANK, '" + nomarray + "', @PRINT)", con);
                         command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = ReturnMaxIdJournal() + 1;
                         command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
                         command.Parameters.Add("@NUMBLANK", FbDbType.Integer).Value = numblank;
