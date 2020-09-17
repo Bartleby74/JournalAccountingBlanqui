@@ -66,14 +66,7 @@ namespace JournalAccountingBlanqui
 
                 if (clsdb.AddBlank(dateTimePickerDispatch.Value, props.Fields.UserID, cmBxAdress.Text, cmBxName.Text, txBxN_Array.Text, txBxNum.Text))
                 {
-                    rowID = 0;
-                    dtGdVBlanqUse.Rows.Add(1);
-                    dtGdVBlanqUse.Rows[rowID].Cells[0].Value = idtab;
-                    dtGdVBlanqUse.Rows[rowID].Cells[1].Value = dateTimePickerDispatch.Value;
-                    dtGdVBlanqUse.Rows[rowID].Cells[2].Value = cmBxAdress.Text;
-                    dtGdVBlanqUse.Rows[rowID].Cells[3].Value = cmBxName.Text;
-                    dtGdVBlanqUse.Rows[rowID].Cells[4].Value = txBxN_Array.Text;
-                    dtGdVBlanqUse.Rows[rowID].Cells[5].Value = txBxNum.Text;
+                    UpdSpisok();
                 }
             }
             else
@@ -185,27 +178,7 @@ namespace JournalAccountingBlanqui
             }
         }
 
-        private void UpdSearchSpisok()
-        {
-            dtGdVBlanqUse.DataSource = clsdb.UpdSpisokSearchUser(props.Fields.UserID, txBxSearchDate.Text, txBxSearchAdress.Text, txBxSearchName.Text, txBxSearchNArray.Text, txBxSearchNum.Text);
-
-            if (dtGdVBlanqUse.RowCount > 0)
-            {
-                dtGdVBlanqUse.Columns[6].Visible = false;
-                rowID = 0;
-                idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[rowID].Cells[0].Value);
-                dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[rowID].Cells[1].Value.ToString());
-                cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
-                cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
-                txBxN_Array.Text = dtGdVBlanqUse.Rows[rowID].Cells[4].Value.ToString();
-                txBxNum.Text = dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString();
-            }
-            else
-            {
-                MessageBox.Show("В журнале нет ни одной записи.");
-            }
-        }
-
+        
         private void SetAutoComplete()
         {
             cmBxName.AutoCompleteCustomSource.Clear();
@@ -223,29 +196,29 @@ namespace JournalAccountingBlanqui
             }
         }
 
-        private void TxBxSearchNum_TextChanged(object sender, EventArgs e)
+        private void TxBxSearchNum_TextChanged(object sender, EventArgs e) // Convert.ToInt32()\"\"
         {
-            UpdSearchSpisok();
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchNArray_TextChanged(object sender, EventArgs e)
         {
-            UpdSearchSpisok();
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchName_TextChanged(object sender, EventArgs e)
         {
-            UpdSearchSpisok();
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchAdress_TextChanged(object sender, EventArgs e)
         {
-            UpdSearchSpisok();
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchDate_TextChanged(object sender, EventArgs e)
         {
-            UpdSearchSpisok();
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void BtnReset_Click(object sender, EventArgs e)

@@ -105,6 +105,7 @@ namespace JournalAccountingBlanqui
             this.txBxPass.Name = "txBxPass";
             this.txBxPass.Size = new System.Drawing.Size(324, 26);
             this.txBxPass.TabIndex = 1;
+            this.txBxPass.Text = "5449";
             this.txBxPass.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxBxPass_KeyDown);
             // 
             // picBxShow
