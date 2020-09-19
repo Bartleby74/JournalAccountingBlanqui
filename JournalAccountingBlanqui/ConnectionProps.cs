@@ -12,8 +12,8 @@ namespace JournalAccountingBlanqui
     {
         //Чтобы добавить настройку в программу просто добавьте суда строку вида -
         //public ТИП ИМЯ_ПЕРЕМЕННОЙ = значение_переменной_по_умолчанию;
-        private static string baseFileDir = @"VIKI:D:\DATA\JUSTICE\BLANQUI.FDB";
-        //private static string baseFileDir = @"Server2019t01:D:\DATA\JUSTICE";
+        //private static string baseFileDir = @"VIKI:D:\DATA\JUSTICE\BLANQUI.FDB";
+        private static string baseFileDir = @"Server2019t01:D:\DATA\JUSTICE";
         //private static string baseFileDir = @"Server2009t01:C:\DATA\JUSTICE";
         private static string systemUser = @"SYSDBA";
         private static string systemPassword = @"m";
@@ -25,6 +25,19 @@ namespace JournalAccountingBlanqui
         private static string userStatus = "";
         private static int selectRow = 0;
         private static DateTime dateSelect = DateTime.Now;
+
+        private static string сonnectionString = "";
+
+        /// <summary>
+        /// Строка подключения к базе данных
+        /// </summary>
+        public string ConnectionString
+        {
+            get
+            { return сonnectionString; }
+            set
+            { сonnectionString = value; }
+        }
 
         /// <summary>
         /// Расположение базы данных
@@ -158,8 +171,7 @@ namespace JournalAccountingBlanqui
         string userid = "", passw = "";
         // Строка подключения
         string ConnectFileBase = "";
-        string ConnectionString = Application.StartupPath + "\\BLANQUI.FDB";
-
+        
         public PropsFields Fields;
         /// <summary>
         /// Создаёт новый экземпляр класса ConnectionSettings
@@ -182,7 +194,7 @@ namespace JournalAccountingBlanqui
             passw = Fields.SystemPassword;
 
             if (ConnectFileBase == "")
-            { ConnectFileBase = ConnectionString; }
+            { ConnectFileBase = Application.StartupPath + "\\BLANQUI.FDB"; }
             if (userid == "")
             { userid = "SYSDBA"; }
             if (passw == "")
@@ -203,7 +215,9 @@ namespace JournalAccountingBlanqui
             csb.Append("user id=" + userid + ";");
             csb.Append("password=" + passw);
 
-            return csb.ToString();
+            Fields.ConnectionString = csb.ToString();
+
+            return Fields.ConnectionString;
         }
 
         /// <summary>

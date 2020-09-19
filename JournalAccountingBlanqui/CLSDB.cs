@@ -30,7 +30,7 @@ namespace JournalAccountingBlanqui
         internal DataSet GetPrint(int userID, string statusPrint)
         {
             DataSet dataSet = new DataSet();
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
                 FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, NAME_BLANKS.NBLANK, DESTINATION_ADRESS.ADRESS, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK FROM JOURNAL_OF_USE INNER JOIN USERS ON (JOURNAL_OF_USE.FIO = USERS.ID) INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE ((USERS.ID = @USERID) AND (JOURNAL_OF_USE.PRINT = @STATUSPRINT)) ORDER BY JOURNAL_OF_USE.NUM_BLANK", con);
@@ -54,7 +54,7 @@ namespace JournalAccountingBlanqui
         internal bool SetPrint(int idjournal, string statusPrint, DateTime dateprint)
         {
             bool p = false;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -130,7 +130,7 @@ namespace JournalAccountingBlanqui
         /// <returns></returns>
         internal DataTable UpdSpisokFullUser(int userID)
         {
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 FbCommand command = con.CreateCommand();
                 command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
@@ -159,7 +159,7 @@ namespace JournalAccountingBlanqui
         /// <returns></returns>
         internal object UpdSpisokSearchUser(int userID, string dateotpr, string adress, string nblank, string numarray, string num)
         {
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 FbCommand command = con.CreateCommand();
                 command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE (JOURNAL_OF_USE.FIO = @IDFIO) AND (JOURNAL_OF_USE.DATEUSE LIKE '%" + dateotpr + "%') AND (UPPER(_WIN1251''||DESTINATION_ADRESS.ADRESS) LIKE UPPER(_WIN1251''||'%" + adress + "%')) AND (UPPER(_WIN1251''||NAME_BLANKS.NBLANK) LIKE UPPER(_WIN1251''||'%" + nblank + "%')) AND (JOURNAL_OF_USE.N_ARRAY LIKE '%" + numarray + "%') AND (JOURNAL_OF_USE.NUM_BLANK LIKE '%" + num + "%') ORDER BY JOURNAL_OF_USE.ID DESC";
@@ -189,7 +189,7 @@ namespace JournalAccountingBlanqui
         {
             bool m = false;
 
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
@@ -215,7 +215,7 @@ namespace JournalAccountingBlanqui
             bool m = false;
             string print = "FALSE";
 
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
@@ -240,7 +240,7 @@ namespace JournalAccountingBlanqui
         internal AutoCompleteStringCollection UpdAutoComplAdress()
         {
             AutoCompleteStringCollection list = new AutoCompleteStringCollection();
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
@@ -266,7 +266,7 @@ namespace JournalAccountingBlanqui
         internal AutoCompleteStringCollection UpdAutoComplName()
         {
             AutoCompleteStringCollection list = new AutoCompleteStringCollection();
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 con.Open();
                 FbCommand sqlReq = con.CreateCommand();
@@ -296,7 +296,7 @@ namespace JournalAccountingBlanqui
         {
             bool m = false;
             int numint = Convert.ToInt32(num), a = 0, b = 0;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
                 FbCommand command = new FbCommand(@"SELECT JOURNAL_ISSUANCE.FIRST_BLANK, JOURNAL_ISSUANCE.LAST_BLANK FROM NAME_BLANKS INNER JOIN JOURNAL_ISSUANCE ON (NAME_BLANKS.ID = JOURNAL_ISSUANCE.BLANK_NAME) INNER JOIN USERS ON (JOURNAL_ISSUANCE.FIO = USERS.ID) WHERE ((NAME_BLANKS.NBLANK = @NBLANK) AND (USERS.ID = @IDUSER))", con);
@@ -324,7 +324,7 @@ namespace JournalAccountingBlanqui
         public int ReturnMaxIdJournal()
         {
             int idjournal = 0;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -361,7 +361,7 @@ namespace JournalAccountingBlanqui
         {
             bool p = false;
             int idadress = ReturnIdAdress(adress);
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -412,7 +412,7 @@ namespace JournalAccountingBlanqui
             }
             else
             {
-                using (FbConnection con = new FbConnection(props.ConnectStr()))
+                using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
                 {
                     try
                     {
@@ -445,7 +445,7 @@ namespace JournalAccountingBlanqui
         private int ReturnIdNblank(string nblank)
         {
             int idnamebl = 0;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -474,7 +474,7 @@ namespace JournalAccountingBlanqui
         public int ReturnIdAdress(string adress)
         {
             int idadress = 0;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -510,7 +510,7 @@ namespace JournalAccountingBlanqui
         public int AddAdress(string adress)
         {
             int idadress = ReturnMaxIdAdress() + 1;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
@@ -539,7 +539,7 @@ namespace JournalAccountingBlanqui
         public int ReturnMaxIdAdress()
         {
             int idadress = 0;
-            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 try
                 {
