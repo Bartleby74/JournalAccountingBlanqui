@@ -102,7 +102,7 @@
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
             this.groupBox2.Controls.Add(this.btnReset);
-            this.groupBox2.Location = new System.Drawing.Point(13, 524);
+            this.groupBox2.Location = new System.Drawing.Point(13, 498);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1054, 97);
@@ -236,6 +236,7 @@
             // btnReset
             // 
             this.btnReset.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnReset.BackColor = System.Drawing.Color.LightCyan;
             this.btnReset.Location = new System.Drawing.Point(955, 56);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(93, 35);
@@ -255,7 +256,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox4.Size = new System.Drawing.Size(1054, 246);
+            this.groupBox4.Size = new System.Drawing.Size(1054, 220);
             this.groupBox4.TabIndex = 37;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Список использованных бланков";
@@ -289,7 +290,7 @@
             dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dtGdVBlanqUse.RowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dtGdVBlanqUse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dtGdVBlanqUse.Size = new System.Drawing.Size(1046, 217);
+            this.dtGdVBlanqUse.Size = new System.Drawing.Size(1046, 191);
             this.dtGdVBlanqUse.TabIndex = 1;
             this.dtGdVBlanqUse.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DtGdVBlanqUse_CellEnter);
             // 
@@ -496,7 +497,7 @@
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(956, 630);
+            this.btnClose.Location = new System.Drawing.Point(956, 604);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(111, 35);
             this.btnClose.TabIndex = 8;
@@ -547,7 +548,6 @@
             this.cmBxName.CausesValidation = false;
             this.cmBxName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmBxName.Enabled = false;
-            this.cmBxName.ForeColor = System.Drawing.Color.Transparent;
             this.cmBxName.FormattingEnabled = true;
             this.cmBxName.Location = new System.Drawing.Point(203, 129);
             this.cmBxName.Name = "cmBxName";
@@ -583,9 +583,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackColor = System.Drawing.Color.LightCyan;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1079, 677);
+            this.ClientSize = new System.Drawing.Size(1079, 651);
             this.Controls.Add(this.cmBxAdress);
             this.Controls.Add(this.cmBxName);
             this.Controls.Add(this.label13);

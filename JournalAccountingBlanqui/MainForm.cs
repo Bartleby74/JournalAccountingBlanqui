@@ -14,6 +14,7 @@ namespace JournalAccountingBlanqui
         //PropsFields propsFields = new PropsFields(); //экземпляр класса с настройками
         Props props = new Props(); //экземпляр класса с настройками
         CLSDB clsdb = new CLSDB();
+        ReportPrinting reportPrinting = new ReportPrinting();
         public int idtab = 0;
         int rowID = 0;
 
@@ -29,7 +30,11 @@ namespace JournalAccountingBlanqui
 
         private void BtnPrint_Click(object sender, EventArgs e)
         {
-
+            this.Enabled = false; 
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            reportPrinting.Printing(props.Fields.UserID); 
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Enabled = true;
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)

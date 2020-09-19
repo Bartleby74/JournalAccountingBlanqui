@@ -13,12 +13,70 @@ namespace JournalAccountingBlanqui
         Props props = new Props(); //экземпляр класса с настройками
         PropsFields propsFields = new PropsFields(); //экземпляр класса с настройками 
         private DataTable bindingSource = new DataTable();
+        //DataSet dataSet;
 
         private string pathSaveSetting { get { return Application.StartupPath + "\\Setting.xml"; } }
         static string ConnectFileBase = Application.StartupPath;
         StringBuilder SqlText = new StringBuilder();
         StringBuilder SqlText1 = new StringBuilder();
         StringBuilder SqlTextU = new StringBuilder();
+
+        /// <summary>
+        /// Возвращает список бланков не распечатанных в журнал
+        /// </summary>
+        /// <param name="userID">ID пользователя</param>
+        /// <param name="statusPrint">Если бланк не распечатан, то "FALSE"</param>
+        /// <returns></returns>
+        internal DataSet GetPrint(int userID, string statusPrint)
+        {
+            DataSet dataSet = new DataSet();
+            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            {
+                con.Open();
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, NAME_BLANKS.NBLANK, DESTINATION_ADRESS.ADRESS, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK FROM JOURNAL_OF_USE INNER JOIN USERS ON (JOURNAL_OF_USE.FIO = USERS.ID) INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE ((USERS.ID = @USERID) AND (JOURNAL_OF_USE.PRINT = @STATUSPRINT)) ORDER BY JOURNAL_OF_USE.NUM_BLANK", con);
+                command.Parameters.Add("@USERID", FbDbType.Integer).Value = userID;
+                command.Parameters.Add("@STATUSPRINT", FbDbType.Text).Value = statusPrint;
+                FbDataAdapter adapter = new FbDataAdapter(command);
+                
+                adapter.Fill(dataSet);
+                con.Close();
+            }
+            return dataSet;
+        }
+
+        /// <summary>
+        /// Устанавливает в строке по заданному ID значения для полей статуса печати и даты печати отчёта
+        /// </summary>
+        /// <param name="idjournal">ID записи</param>
+        /// <param name="statusPrint">если рапечатываем, то соответственно "TRUE"</param>
+        /// <param name="dateprint">Дата печати отчёта</param>
+        /// <returns></returns>
+        internal bool SetPrint(int idjournal, string statusPrint, DateTime dateprint)
+        {
+            bool p = false;
+            using (FbConnection con = new FbConnection(props.ConnectStr()))
+            {
+                try
+                {
+                    con.Open();
+                    FbCommand command = new FbCommand(@"UPDATE JOURNAL_OF_USE SET JOURNAL_OF_USE.PRINT = @STATUSPRINT, JOURNAL_OF_USE.DATE_PRINT = @DATEPRINT WHERE JOURNAL_OF_USE.ID = @IDJOURNAL", con);
+                    command.Parameters.Add("@STATUSPRINT", FbDbType.Text).Value = statusPrint;
+                    command.Parameters.Add("@DATEPRINT", FbDbType.Date).Value = dateprint;
+                    command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = idjournal;
+
+                    command.ExecuteScalar();
+
+                    p = true;
+                    con.Close();
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    p = false;
+                }
+            }
+            return p;
+        }
 
         /// <summary>
         /// Возвращает да или нет и заполняет ID, ФИО, должность и статус пользователя если пароль верный
@@ -425,14 +483,14 @@ namespace JournalAccountingBlanqui
                     command.Parameters.Add("@ADRESS", FbDbType.VarChar).Value = adress;
                     FbDataReader dr = command.ExecuteReader();
 
-                    dr.Read();
-                    if (dr.GetInt32(0) == 0)
+                    
+                    if (dr.Read())
                     {
-                        idadress = AddAdress(adress);
+                        idadress = dr.GetInt32(0);
                     }
                     else
                     {
-                        idadress = dr.GetInt32(0);
+                        idadress = AddAdress(adress);
                     }
                 }
                 catch (Exception error)
