@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>JournalAccountingBlanqui</RootNamespace>
     <AssemblyName>JournalAccountingBlanqui</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <PublishUrl>publish\</PublishUrl>
