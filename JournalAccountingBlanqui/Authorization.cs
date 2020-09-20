@@ -35,11 +35,13 @@ namespace JournalAccountingBlanqui
             {
                 if (chckBxRemember.Checked == true)
                 {
-                    props.Fields.UserLogin = txBxLogin.Text;
+                    props.Fields.UserLogin = txBxLogin.Text; 
+                    props.Fields.UserPassw = txBxPass.Text;
                 }
                 else
                 {
-                    props.Fields.UserLogin = "";
+                    props.Fields.UserLogin = ""; 
+                    props.Fields.UserPassw = "";
                 }
                 props.WriteXml();
 
@@ -83,6 +85,7 @@ namespace JournalAccountingBlanqui
             props.ReadXml();
             txBxPass.UseSystemPasswordChar = true;
             txBxLogin.Text = props.Fields.UserLogin;
+            txBxPass.Text = props.Fields.UserPassw;
             if (txBxLogin.Text.Length > 0)
                 chckBxRemember.Checked = true;
             else

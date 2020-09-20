@@ -25,7 +25,14 @@ namespace JournalAccountingBlanqui
 
         private void BtnModify_Click(object sender, EventArgs e)
         {
-            EnableEditMode();
+            if (dtGdVBlanqUse.Rows[rowID].Cells[6].Value.ToString() == "0")
+            {
+                EnableEditMode(); 
+            }
+            else
+            {
+                MessageBox.Show("Невозможно внести изменения в журнал.\nПо движению бланка с номером " + txBxNum.Text + " был распечатан отчёт.\nВыберите другую запись.");
+            }
         }
 
         private void BtnPrint_Click(object sender, EventArgs e)
@@ -42,70 +49,74 @@ namespace JournalAccountingBlanqui
             DisableEditMode();
             idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[rowID].Cells[0].Value);
             dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[rowID].Cells[1].Value);
-            cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
-            cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
+            cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
+            cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
             txBxN_Array.Text = dtGdVBlanqUse.Rows[rowID].Cells[4].Value.ToString();
             txBxNum.Text = dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString();
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            if (idtab == 0)
+            if (idtab == 0) // Выполняется при добавлении бланка
             {
-                if (dateTimePickerDispatch.Value == null | cmBxName.Text == "" | cmBxAdress.Text == "" | txBxN_Array.Text == "" | txBxNum.Text == "")
+                if (dateTimePickerDispatch.Value == null | cmBxName.Text == "" | cmBxAdress.Text == "" | txBxN_Array.Text == "" | txBxNum.Text == "") //Проверка на заполнение полей
                 {
                     MessageBox.Show("Не все поля заполнены!");
                     return;
                 }
-                if (clsdb.GetUsedNomBlanq(cmBxName.Text, txBxNum.Text))
+                if (clsdb.GetUsedNomBlanq(cmBxName.Text, txBxNum.Text)) // Проверка на использование бланка ранее
                 {
                     MessageBox.Show("Бланк с таким номером уже добавлен в журнал.\nВведите другой номер или измените название бланка.");
                     return;
                 }
 
-                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text))
+                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text)) // Проверка на выдачу бланка с таким номером данному сотруднику
                 {
                     MessageBox.Show("Бланк с таким номером не выдавался данному сотруднику. Введите другой номер.");
                     return;
                 }
 
-                if (clsdb.AddBlank(dateTimePickerDispatch.Value, props.Fields.UserID, cmBxAdress.Text, cmBxName.Text, txBxN_Array.Text, txBxNum.Text))
+                if (clsdb.AddBlank(dateTimePickerDispatch.Value, props.Fields.UserID, cmBxAdress.Text, cmBxName.Text, txBxN_Array.Text, txBxNum.Text)) // Бланк добавляется в журнал и в случае удачи выводится сообщение и обновляется datagridview
                 {
+                    SetAutoCompleteAdress();
+                    MessageBox.Show("Информация по движению бланка с номером " + txBxNum.Text + " внесена в журнал");
                     UpdSpisok();
                 }
             }
-            else
+            else // Выполняется при редактировании существующей записи
             {
-                if (dateTimePickerDispatch.Value == null | cmBxName.Text == "" | cmBxAdress.Text == "" | txBxN_Array.Text == "" | txBxNum.Text == "")
+                if (dateTimePickerDispatch.Value == null | cmBxName.Text == "" | cmBxAdress.Text == "" | txBxN_Array.Text == "" | txBxNum.Text == "") //Проверка на заполнение полей
                 {
                     MessageBox.Show("Не все поля заполнены!");
                     return;
                 }
 
-                if (clsdb.GetPrintedNomBlanq(cmBxName.Text, txBxNum.Text) == "TRUE")
+                if (clsdb.GetPrintedNomBlanq(cmBxName.Text, txBxNum.Text) == 1) // Проверка на использование бланка ранее
                 {
-                    MessageBox.Show("Невозможно внести изменения в журнал.\nИнформация о движении бланка была распечатана на бумажном носителе.\nВведите другой номер или измените название бланка.");
+                    MessageBox.Show("Невозможно внести изменения в журнал.\nПо движению бланка с номером " + txBxNum.Text + " был распечатан отчёт.\nВведите другой номер или измените название бланка.");
                     return;
                 }
 
-                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text))
+                if (!clsdb.GetBlanqUser(props.Fields.UserID, cmBxName.Text, txBxNum.Text)) // Проверка на выдачу бланка с таким номером данному сотруднику
                 {
                     MessageBox.Show("Бланк с таким номером не выдавался данному сотруднику. Введите другой номер.");
                     return;
                 }
 
-                if (clsdb.GetUsedNomBlanq(cmBxName.Text, txBxNum.Text) && (txBxNum.Text != dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString() || cmBxName.Text != dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString()))
+                if (clsdb.GetUsedNomBlanq(cmBxName.Text, txBxNum.Text) && (txBxNum.Text != dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString() || cmBxName.Text != dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString())) // Проверка на использование бланка ранее
                 {
                     MessageBox.Show("Бланк с таким номером уже добавлен в журнал.\nВведите другой номер или измените название бланка.");
                     return;
                 }
 
-                if (clsdb.BlanqSave(idtab, dateTimePickerDispatch.Value, cmBxName.Text, cmBxAdress.Text, txBxN_Array.Text, txBxNum.Text))
+                if (clsdb.BlanqSave(idtab, dateTimePickerDispatch.Value, cmBxName.Text, cmBxAdress.Text, txBxN_Array.Text, txBxNum.Text)) // По движения бланка в журнал вносятся изменения и в случае удачи выводится сообщение и обновляется datagridview
                 {
+                    SetAutoCompleteAdress();
+                    MessageBox.Show("Изменения по движению бланка с номером " + txBxNum.Text + " внесены в журнал");
                     dtGdVBlanqUse.Rows[rowID].Cells[0].Value = idtab;
                     dtGdVBlanqUse.Rows[rowID].Cells[1].Value = dateTimePickerDispatch.Value;
-                    dtGdVBlanqUse.Rows[rowID].Cells[2].Value = cmBxAdress.Text;
-                    dtGdVBlanqUse.Rows[rowID].Cells[3].Value = cmBxName.Text;
+                    dtGdVBlanqUse.Rows[rowID].Cells[2].Value = cmBxName.Text;
+                    dtGdVBlanqUse.Rows[rowID].Cells[3].Value = cmBxAdress.Text;
                     dtGdVBlanqUse.Rows[rowID].Cells[4].Value = txBxN_Array.Text;
                     dtGdVBlanqUse.Rows[rowID].Cells[5].Value = txBxNum.Text;
                 }
@@ -135,8 +146,8 @@ namespace JournalAccountingBlanqui
             rowID = e.RowIndex;
             idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[rowID].Cells[0].Value);
             dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[rowID].Cells[1].Value);
-            cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
-            cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
+            cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
+            cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
             txBxN_Array.Text = dtGdVBlanqUse.Rows[rowID].Cells[4].Value.ToString();
             txBxNum.Text = dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString();
         }
@@ -151,7 +162,8 @@ namespace JournalAccountingBlanqui
 
             btnCancel.Visible = false;
             btnSave.Visible = false;
-            SetAutoComplete();
+            SetAutoCompleteName();
+            SetAutoCompleteAdress();
 
             lblFIO.Text = props.Fields.UserFIO;
             if (props.Fields.UserStatus == "admin")
@@ -162,18 +174,27 @@ namespace JournalAccountingBlanqui
             UpdSpisok();
         }
 
+        void PaintRows()
+        {
+            foreach (DataGridViewRow row in dtGdVBlanqUse.Rows)
+            {
+                if (row.Cells[6].Value.ToString() == "1")
+                    row.DefaultCellStyle.BackColor = Color.MistyRose;
+            }
+        }
+
         private void UpdSpisok()
         {
             dtGdVBlanqUse.DataSource = clsdb.UpdSpisokFullUser(props.Fields.UserID);
-
+            PaintRows();
             if (dtGdVBlanqUse.RowCount > 0)
             {
                 dtGdVBlanqUse.Columns[6].Visible = false;
                 rowID = 0;
                 idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[0].Cells[0].Value);
                 dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[0].Cells[1].Value.ToString());
-                cmBxAdress.Text = dtGdVBlanqUse.Rows[0].Cells[2].Value.ToString();
-                cmBxName.Text = dtGdVBlanqUse.Rows[0].Cells[3].Value.ToString();
+                cmBxName.Text = dtGdVBlanqUse.Rows[0].Cells[2].Value.ToString();
+                cmBxAdress.Text = dtGdVBlanqUse.Rows[0].Cells[3].Value.ToString();
                 txBxN_Array.Text = dtGdVBlanqUse.Rows[0].Cells[4].Value.ToString();
                 txBxNum.Text = dtGdVBlanqUse.Rows[0].Cells[5].Value.ToString();
             }
@@ -184,7 +205,7 @@ namespace JournalAccountingBlanqui
         }
 
         
-        private void SetAutoComplete()
+        private void SetAutoCompleteName()
         {
             cmBxName.AutoCompleteCustomSource.Clear();
             cmBxName.AutoCompleteCustomSource = clsdb.UpdAutoComplName();
@@ -192,7 +213,10 @@ namespace JournalAccountingBlanqui
             {
                 cmBxName.Items.Insert(i, cmBxName.AutoCompleteCustomSource[i]);
             }
+        }
 
+        private void SetAutoCompleteAdress()
+        {
             cmBxAdress.AutoCompleteCustomSource.Clear();
             cmBxAdress.AutoCompleteCustomSource = clsdb.UpdAutoComplAdress();
             for (int i = 0; i < cmBxAdress.AutoCompleteCustomSource.Count; i++)
@@ -203,27 +227,27 @@ namespace JournalAccountingBlanqui
 
         private void TxBxSearchNum_TextChanged(object sender, EventArgs e) // Convert.ToInt32()\"\"
         {
-            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND ARRAY_NUMBER LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATE_USE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchNArray_TextChanged(object sender, EventArgs e)
         {
-            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND ARRAY_NUMBER LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATE_USE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchName_TextChanged(object sender, EventArgs e)
         {
-            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND ARRAY_NUMBER LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATE_USE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchAdress_TextChanged(object sender, EventArgs e)
         {
-            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND ARRAY_NUMBER LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATE_USE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void TxBxSearchDate_TextChanged(object sender, EventArgs e)
         {
-            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND N_ARRAY LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NBLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATEUSE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
+            (dtGdVBlanqUse.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(NUM_BLANK, System.String) LIKE '%" + (txBxSearchNum.Text.Trim()) + "%' AND ARRAY_NUMBER LIKE '%" + txBxSearchNArray.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchName.Text.Trim() + "%' AND ADRESS LIKE '%" + txBxSearchAdress.Text.Trim() + "%' AND CONVERT(DATE_USE, System.String) LIKE '%" + txBxSearchDate.Text.Trim() + "%'";
         }
 
         private void BtnReset_Click(object sender, EventArgs e)
@@ -299,6 +323,16 @@ namespace JournalAccountingBlanqui
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             cmBxAdress.SelectionLength = 0;
+        }
+
+        private void btnAdm_Click(object sender, EventArgs e)
+        {
+            using (AdminForm Form = new AdminForm())
+            {
+                
+
+                Form.ShowDialog();
+            }
         }
     }
 }

@@ -13,10 +13,10 @@ namespace JournalAccountingBlanqui
         //Чтобы добавить настройку в программу просто добавьте суда строку вида -
         //public ТИП ИМЯ_ПЕРЕМЕННОЙ = значение_переменной_по_умолчанию;
         //private static string baseFileDir = @"VIKI:D:\DATA\JUSTICE\BLANQUI.FDB";
-        private static string baseFileDir = @"Server2019t01:D:\DATA\JUSTICE";
+        private static string baseFileDir = "";
         //private static string baseFileDir = @"Server2009t01:C:\DATA\JUSTICE";
-        private static string systemUser = @"SYSDBA";
-        private static string systemPassword = @"m";
+        private static string systemUser = "";
+        private static string systemPassword = "";
         private static string userLogin = "";
         private static string userPassw = "";
         private static int userID = 0;

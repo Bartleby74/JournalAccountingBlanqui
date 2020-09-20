@@ -25,21 +25,29 @@ namespace JournalAccountingBlanqui
         /// Возвращает список бланков не распечатанных в журнал
         /// </summary>
         /// <param name="userID">ID пользователя</param>
-        /// <param name="statusPrint">Если бланк не распечатан, то "FALSE"</param>
+        /// <param name="statusPrint">Если бланк не распечатан, то "0"</param>
         /// <returns></returns>
         internal DataSet GetPrint(int userID, string statusPrint)
         {
             DataSet dataSet = new DataSet();
-            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
+            try
             {
-                con.Open();
-                FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, NAME_BLANKS.NBLANK, DESTINATION_ADRESS.ADRESS, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK FROM JOURNAL_OF_USE INNER JOIN USERS ON (JOURNAL_OF_USE.FIO = USERS.ID) INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE ((USERS.ID = @USERID) AND (JOURNAL_OF_USE.PRINT = @STATUSPRINT)) ORDER BY JOURNAL_OF_USE.NUM_BLANK", con);
-                command.Parameters.Add("@USERID", FbDbType.Integer).Value = userID;
-                command.Parameters.Add("@STATUSPRINT", FbDbType.Text).Value = statusPrint;
-                FbDataAdapter adapter = new FbDataAdapter(command);
-                
-                adapter.Fill(dataSet);
-                con.Close();
+                using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
+                {
+                    con.Open();
+                    FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATE_USE, NAME_BLANKS.NAME_BLANK, DESTINATION_ADRESS.ADRESS, JOURNAL_OF_USE.ARRAY_NUMBER, JOURNAL_OF_USE.NUM_BLANK FROM JOURNAL_OF_USE INNER JOIN USERS ON (JOURNAL_OF_USE.FIO = USERS.ID) INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.ID_BLANK_NAME = NAME_BLANKS.ID) WHERE ((USERS.ID = @USERID) AND (JOURNAL_OF_USE.PRINT = @STATUSPRINT)) ORDER BY JOURNAL_OF_USE.NUM_BLANK", con);
+                    command.Parameters.Add("@USERID", FbDbType.Integer).Value = userID;
+                    command.Parameters.Add("@STATUSPRINT", FbDbType.SmallInt).Value = statusPrint;
+                    FbDataAdapter adapter = new FbDataAdapter(command);
+
+                    adapter.Fill(dataSet);
+                    con.Close();
+                }
+            }
+            
+            catch (Exception error)
+            {
+                MessageBox.Show("Не удалось вернуть список бланков для печати.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             return dataSet;
         }
@@ -48,7 +56,7 @@ namespace JournalAccountingBlanqui
         /// Устанавливает в строке по заданному ID значения для полей статуса печати и даты печати отчёта
         /// </summary>
         /// <param name="idjournal">ID записи</param>
-        /// <param name="statusPrint">если рапечатываем, то соответственно "TRUE"</param>
+        /// <param name="statusPrint">если рапечатываем, то соответственно "1"</param>
         /// <param name="dateprint">Дата печати отчёта</param>
         /// <returns></returns>
         internal bool SetPrint(int idjournal, string statusPrint, DateTime dateprint)
@@ -60,7 +68,7 @@ namespace JournalAccountingBlanqui
                 {
                     con.Open();
                     FbCommand command = new FbCommand(@"UPDATE JOURNAL_OF_USE SET JOURNAL_OF_USE.PRINT = @STATUSPRINT, JOURNAL_OF_USE.DATE_PRINT = @DATEPRINT WHERE JOURNAL_OF_USE.ID = @IDJOURNAL", con);
-                    command.Parameters.Add("@STATUSPRINT", FbDbType.Text).Value = statusPrint;
+                    command.Parameters.Add("@STATUSPRINT", FbDbType.SmallInt).Value = statusPrint;
                     command.Parameters.Add("@DATEPRINT", FbDbType.Date).Value = dateprint;
                     command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = idjournal;
 
@@ -71,7 +79,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     p = false;
                 }
             }
@@ -93,7 +101,7 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = new FbCommand(@"SELECT USERS.ID, USERS.FIO, USERS.OFFICE, USERS.STATUS FROM USERS WHERE USERS.LOGIN = @LOGIN AND USERS.PASSW = @PASSWORD", con);
+                    FbCommand command = new FbCommand(@"SELECT USERS.ID, USERS.FIO, USERS.OFFICE, USERS.STATUS FROM USERS WHERE USERS.LOGIN = @LOGIN AND USERS.PASSW = @PASSWORD AND USERS.DELETED = '0' ", con);
                     command.Parameters.Add("@LOGIN", FbDbType.Text).Value = login;
                     command.Parameters.Add("@PASSWORD", FbDbType.Text).Value = password;
 
@@ -112,7 +120,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Неудаётся подключиться к базе данных: " + ex, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OKCancel);
+                    MessageBox.Show("Неудаётся подключиться к базе данных.\nПодробности: " + ex.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OKCancel);
                 }
                 finally
                 {
@@ -131,41 +139,10 @@ namespace JournalAccountingBlanqui
         internal DataTable UpdSpisokFullUser(int userID)
         {
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
-            {   //Запрос обновлён
-                FbCommand command = con.CreateCommand();
-                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.DATE_PRINT FROM DESTINATION_ADRESS INNER JOIN (USERS INNER JOIN (NAME_BLANKS INNER JOIN JOURNAL_OF_USE ON NAME_BLANKS.ID = JOURNAL_OF_USE.BLANK_NAME) ON USERS.ID = JOURNAL_OF_USE.FIO) ON DESTINATION_ADRESS.ID = JOURNAL_OF_USE.ID_ADRESS WHERE (USERS.ID='" + userID + "') ORDER BY JOURNAL_OF_USE.ID DESC";
-                FbDataAdapter adapter = new FbDataAdapter(command);
-                DataSet dataset = new DataSet();
-                adapter.Fill(dataset);
-                con.Close();
-                if (dataset.Tables.Count == 0)
-                {
-                    MessageBox.Show("Ошибка, результат не содежит строк");
-                }
-                bindingSource = dataset.Tables[0];
-                return bindingSource;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает список использованных бланков пользователем по его ID
-        /// </summary>
-        /// <param name="userID">ID пользователя</param>
-        /// <param name="dateotpr">Дата использования бланка</param>
-        /// <param name="adress">Адрес направления</param>
-        /// <param name="nblank">Название бланка</param>
-        /// <param name="numarray">Номер наряда</param>
-        /// <param name="num">Номер бланка</param>
-        /// <returns></returns>
-        internal object UpdSpisokSearchUser(int userID, string dateotpr, string adress, string nblank, string numarray, string num)
-        {
-            using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
-            {   //Запрос обновлён
-                FbCommand command = con.CreateCommand();
-                command.CommandText = @"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATEUSE, DESTINATION_ADRESS.ADRESS, NAME_BLANKS.NBLANK, JOURNAL_OF_USE.N_ARRAY, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE (JOURNAL_OF_USE.FIO = @IDFIO) AND (JOURNAL_OF_USE.DATEUSE LIKE '%" + dateotpr + "%') AND (UPPER(_WIN1251''||DESTINATION_ADRESS.ADRESS) LIKE UPPER(_WIN1251''||'%" + adress + "%')) AND (UPPER(_WIN1251''||NAME_BLANKS.NBLANK) LIKE UPPER(_WIN1251''||'%" + nblank + "%')) AND (JOURNAL_OF_USE.N_ARRAY LIKE '%" + numarray + "%') AND (JOURNAL_OF_USE.NUM_BLANK LIKE '%" + num + "%') ORDER BY JOURNAL_OF_USE.ID DESC";
-                command.Parameters.Add("@IDFIO", FbDbType.VarChar).Value = userID;
-                
-
+            {   
+                //Запрос обновлён
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID, JOURNAL_OF_USE.DATE_USE, NAME_BLANKS.NAME_BLANK, DESTINATION_ADRESS.ADRESS, JOURNAL_OF_USE.ARRAY_NUMBER, JOURNAL_OF_USE.NUM_BLANK, JOURNAL_OF_USE.PRINT, JOURNAL_OF_USE.DATE_PRINT FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.ID_BLANK_NAME = NAME_BLANKS.ID) INNER JOIN DESTINATION_ADRESS ON (JOURNAL_OF_USE.ID_ADRESS = DESTINATION_ADRESS.ID) INNER JOIN USERS ON (JOURNAL_OF_USE.FIO = USERS.ID) WHERE (USERS.ID = @USER_ID) ORDER BY JOURNAL_OF_USE.ID DESC", con);
+                command.Parameters.Add("@USER_ID", FbDbType.VarChar).Value = userID; 
                 FbDataAdapter adapter = new FbDataAdapter(command);
                 DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
@@ -183,18 +160,19 @@ namespace JournalAccountingBlanqui
         /// Возвращает true если бланк уже использовался
         /// </summary>
         /// <param name="name">Наименование бланка</param> 
-        /// <param name="nn">Номер бланка</param> 
+        /// <param name="num">Номер бланка</param> 
         /// <returns>true или false</returns>
-        internal bool GetUsedNomBlanq(string name, string nn)
+        internal bool GetUsedNomBlanq(string name, string num)
         {
             bool m = false;
 
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
-                FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.ID FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + name + "' AND JOURNAL_OF_USE.NUM_BLANK = " + Int32.Parse(nn) + "";
-                FbDataReader dr = sqlReq.ExecuteReader();
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.ID FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.ID_BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NAME_BLANK = @NAME_BLANK AND JOURNAL_OF_USE.NUM_BLANK = @NUM_BLANK", con);
+                command.Parameters.Add("@NAME_BLANK", FbDbType.VarChar).Value = name;
+                command.Parameters.Add("@NUM_BLANK", FbDbType.Integer).Value = Int32.Parse(num);
+                FbDataReader dr = command.ExecuteReader();
 
                 m = dr.Read();
 
@@ -208,24 +186,25 @@ namespace JournalAccountingBlanqui
         /// Возвращает true если информация о движении бланка уже распечатана
         /// </summary>
         /// <param name="name">Наименование бланка</param> 
-        /// <param name="nn">Номер бланка</param> 
+        /// <param name="num">Номер бланка</param> 
         /// <returns>true или false</returns>
-        internal string GetPrintedNomBlanq(string name, string nn)
+        internal int GetPrintedNomBlanq(string name, string num)
         {
             bool m = false;
-            string print = "FALSE";
+            int print = 0;
 
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
-                FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NBLANK = '" + name + "' AND JOURNAL_OF_USE.NUM_BLANK = " + nn + "";
-                FbDataReader dr = sqlReq.ExecuteReader();
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_OF_USE.PRINT FROM JOURNAL_OF_USE INNER JOIN NAME_BLANKS ON (JOURNAL_OF_USE.ID_BLANK_NAME = NAME_BLANKS.ID) WHERE NAME_BLANKS.NAME_BLANK = @NAME_BLANK AND JOURNAL_OF_USE.NUM_BLANK = @NUM_BLANK", con);
+                command.Parameters.Add("@NAME_BLANK", FbDbType.VarChar).Value = name;
+                command.Parameters.Add("@NUM_BLANK", FbDbType.Integer).Value = Int32.Parse(num);
+                FbDataReader dr = command.ExecuteReader();
 
                 m = dr.Read();
                 if (m)
                 {
-                    print = dr.GetString(0);
+                    print = dr.GetInt32(0);
                     dr.Close();
                 }
                 con.Close();
@@ -243,9 +222,8 @@ namespace JournalAccountingBlanqui
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 con.Open();
-                FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT DISTINCT DESTINATION_ADRESS.ADRESS FROM DESTINATION_ADRESS ORDER BY DESTINATION_ADRESS.ADRESS";
-                FbDataReader dr = sqlReq.ExecuteReader();
+                FbCommand command = new FbCommand(@"SELECT DISTINCT DESTINATION_ADRESS.ADRESS FROM DESTINATION_ADRESS ORDER BY DESTINATION_ADRESS.ADRESS", con);
+                FbDataReader dr = command.ExecuteReader();
 
                 while (dr.Read())
                 {
@@ -269,9 +247,8 @@ namespace JournalAccountingBlanqui
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {   //Запрос обновлён
                 con.Open();
-                FbCommand sqlReq = con.CreateCommand();
-                sqlReq.CommandText = @"SELECT DISTINCT NAME_BLANKS.NBLANK FROM NAME_BLANKS ORDER BY NAME_BLANKS.NBLANK";
-                FbDataReader dr = sqlReq.ExecuteReader();
+                FbCommand command = new FbCommand(@"SELECT DISTINCT NAME_BLANKS.NAME_BLANK FROM NAME_BLANKS ORDER BY NAME_BLANKS.NAME_BLANK", con);              
+                FbDataReader dr = command.ExecuteReader();
 
                 while (dr.Read())
                 {
@@ -299,7 +276,7 @@ namespace JournalAccountingBlanqui
             using (FbConnection con = new FbConnection(props.Fields.ConnectionString))
             {
                 con.Open();
-                FbCommand command = new FbCommand(@"SELECT JOURNAL_ISSUANCE.FIRST_BLANK, JOURNAL_ISSUANCE.LAST_BLANK FROM NAME_BLANKS INNER JOIN JOURNAL_ISSUANCE ON (NAME_BLANKS.ID = JOURNAL_ISSUANCE.BLANK_NAME) INNER JOIN USERS ON (JOURNAL_ISSUANCE.FIO = USERS.ID) WHERE ((NAME_BLANKS.NBLANK = @NBLANK) AND (USERS.ID = @IDUSER))", con);
+                FbCommand command = new FbCommand(@"SELECT JOURNAL_ISSUANCE.FIRST_BLANK, JOURNAL_ISSUANCE.LAST_BLANK FROM NAME_BLANKS INNER JOIN JOURNAL_ISSUANCE ON (NAME_BLANKS.ID = JOURNAL_ISSUANCE.BLANK_NAME) INNER JOIN USERS ON (JOURNAL_ISSUANCE.FIO = USERS.ID) WHERE ((NAME_BLANKS.NAME_BLANK = @NBLANK) AND (USERS.ID = @IDUSER))", con);
                 command.Parameters.Add("@NBLANK", FbDbType.Text).Value = namebl;
                 command.Parameters.Add("@IDUSER", FbDbType.Integer).Value = iduser;
                 FbDataReader dr = command.ExecuteReader();
@@ -329,9 +306,8 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand sqlReq = con.CreateCommand();
-                    sqlReq.CommandText = @"SELECT MAX(JOURNAL_OF_USE.ID) FROM JOURNAL_OF_USE";
-                    FbDataReader dr = sqlReq.ExecuteReader();
+                    FbCommand command = new FbCommand(@"SELECT MAX(JOURNAL_OF_USE.ID) FROM JOURNAL_OF_USE", con);                  
+                    FbDataReader dr = command.ExecuteReader();
 
                     dr.Read();
                     idjournal = dr.GetInt32(0);
@@ -339,8 +315,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось получить максимальное значение ID. Подробности ",
-                        error.Message, MessageBoxButtons.OK, MessageBoxIcon.Asterisk,
+                    MessageBox.Show("Не удалось получить максимальное значение ID.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk,
                         MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
@@ -366,13 +341,13 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = new FbCommand(@"UPDATE JOURNAL_OF_USE SET JOURNAL_OF_USE.DATEUSE = @DATEOTPR, JOURNAL_OF_USE.BLANK_NAME = (SELECT NAME_BLANKS.ID FROM NAME_BLANKS WHERE NAME_BLANKS.NBLANK = @NBLANK), JOURNAL_OF_USE.ID_ADRESS = @IDADRESS, JOURNAL_OF_USE.N_ARRAY = @NUMARRAY, JOURNAL_OF_USE.NUM_BLANK = @NUMBLANK WHERE JOURNAL_OF_USE.ID = @IDJOURNAL", con);
+                    FbCommand command = new FbCommand(@"UPDATE JOURNAL_OF_USE SET JOURNAL_OF_USE.DATE_USE = @DATE_USE, JOURNAL_OF_USE.ID_BLANK_NAME = (SELECT NAME_BLANKS.ID FROM NAME_BLANKS WHERE NAME_BLANKS.NAME_BLANK = @NAME_BLANK), JOURNAL_OF_USE.ID_ADRESS = @IDADRESS, JOURNAL_OF_USE.ARRAY_NUMBER = @ARRAY_NUMBER, JOURNAL_OF_USE.NUM_BLANK = @NUM_BLANK WHERE JOURNAL_OF_USE.ID = @IDJOURNAL", con);
                     command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = idjournal;
                     command.Parameters.Add("@IDADRESS", FbDbType.Integer).Value = idadress;
-                    command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
-                    command.Parameters.Add("@NBLANK", FbDbType.VarChar).Value = nblank;
-                    command.Parameters.Add("@NUMARRAY", FbDbType.VarChar).Value = numarray;
-                    command.Parameters.Add("@NUMBLANK", FbDbType.Integer).Value = Int32.Parse(num);
+                    command.Parameters.Add("@DATE_USE", FbDbType.Date).Value = dateotpr;
+                    command.Parameters.Add("@NAME_BLANK", FbDbType.VarChar).Value = nblank;
+                    command.Parameters.Add("@ARRAY_NUMBER", FbDbType.VarChar).Value = numarray;
+                    command.Parameters.Add("@NUM_BLANK", FbDbType.Integer).Value = Int32.Parse(num);
                     command.Parameters.Add("@PRINT", FbDbType.VarChar).Value = "FALSE";
 
                     command.ExecuteScalar();
@@ -382,7 +357,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось изменить запись.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     p = false;
                 }
             }
@@ -417,11 +392,15 @@ namespace JournalAccountingBlanqui
                     try
                     {
                         con.Open();
-                        FbCommand command = new FbCommand(@"INSERT INTO JOURNAL_OF_USE(ID, DATEUSE, FIO, ID_ADRESS, BLANK_NAME, NUM_BLANK, N_ARRAY, PRINT) VALUES(@IDJOURNAL, @DATEOTPR, '" + idUser + "', '" + idadress + "', '" + idnblank + "', @NUMBLANK, '" + nomarray + "', @PRINT)", con);
+                        FbCommand command = new FbCommand(@"INSERT INTO JOURNAL_OF_USE(ID, DATE_USE, FIO, ID_ADRESS, ID_BLANK_NAME, ARRAY_NUMBER, NUM_BLANK, PRINT) VALUES(@IDJOURNAL, @DATE_USE, @FIO, @ID_ADRESS, @ID_BLANK_NAME, @ARRAY_NUMBER, @NUM_BLANK, @PRINT)", con);
                         command.Parameters.Add("@IDJOURNAL", FbDbType.Integer).Value = ReturnMaxIdJournal() + 1;
-                        command.Parameters.Add("@DATEOTPR", FbDbType.Date).Value = dateotpr;
-                        command.Parameters.Add("@NUMBLANK", FbDbType.Integer).Value = numblank;
-                        command.Parameters.Add("@PRINT", FbDbType.VarChar).Value = "FALSE";
+                        command.Parameters.Add("@DATE_USE", FbDbType.Date).Value = dateotpr;
+                        command.Parameters.Add("@FIO", FbDbType.Integer).Value = idUser;
+                        command.Parameters.Add("@ID_ADRESS", FbDbType.Integer).Value = idadress;
+                        command.Parameters.Add("@ID_BLANK_NAME", FbDbType.Integer).Value = idnblank;
+                        command.Parameters.Add("@ARRAY_NUMBER", FbDbType.VarChar).Value = nomarray;
+                        command.Parameters.Add("@NUM_BLANK", FbDbType.Integer).Value = numblank;
+                        command.Parameters.Add("@PRINT", FbDbType.SmallInt).Value = 0;
 
                         command.ExecuteScalar();
                         p = true;
@@ -429,7 +408,7 @@ namespace JournalAccountingBlanqui
                     }
                     catch (Exception error)
                     {
-                        MessageBox.Show("Подробности " + error.Message, "Не удалось добавить бланк", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        MessageBox.Show("Не удалось добавить бланк.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         p = false;
                     }
                 }
@@ -450,9 +429,10 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand sqlReq = con.CreateCommand();
-                    sqlReq.CommandText = @"SELECT ID FROM NAME_BLANKS WHERE NBLANK = '" + nblank + "'";
-                    FbDataReader dr = sqlReq.ExecuteReader();
+                    FbCommand command = new FbCommand(@"SELECT ID FROM NAME_BLANKS WHERE NAME_BLANK = @NAME_BLANK", con);
+                    command.Parameters.Add("@NAME_BLANK", FbDbType.VarChar).Value = nblank;
+                    
+                    FbDataReader dr = command.ExecuteReader();
 
                     dr.Read();
                     idnamebl = dr.GetInt32(0);
@@ -460,7 +440,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось получить ID названия бланка. Подробности ", error.Message, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось получить ID названия бланка.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             return idnamebl;
@@ -482,8 +462,7 @@ namespace JournalAccountingBlanqui
                     FbCommand command = new FbCommand(@"SELECT DESTINATION_ADRESS.ID FROM DESTINATION_ADRESS WHERE DESTINATION_ADRESS.ADRESS = @ADRESS", con);
                     command.Parameters.Add("@ADRESS", FbDbType.VarChar).Value = adress;
                     FbDataReader dr = command.ExecuteReader();
-
-                    
+                 
                     if (dr.Read())
                     {
                         idadress = dr.GetInt32(0);
@@ -495,7 +474,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось получить ID Адреса. Подробности ", error.Message, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось получить ID Адреса.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
                 con.Close();
             }
@@ -515,15 +494,15 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = new FbCommand(@"INSERT INTO DESTINATION_ADRESS(DESTINATION_ADRESS.ID, DESTINATION_ADRESS.ADRESS) VALUES(@IDADRESS, @ADRESS)", con);
-                    command.Parameters.Add("@IDADRESS", FbDbType.VarChar).Value = idadress;
+                    FbCommand command = new FbCommand(@"INSERT INTO DESTINATION_ADRESS(DESTINATION_ADRESS.ID, DESTINATION_ADRESS.ADRESS) VALUES(@ID, @ADRESS)", con);
+                    command.Parameters.Add("@ID", FbDbType.VarChar).Value = idadress;
                     command.Parameters.Add("@ADRESS", FbDbType.VarChar).Value = adress;
                     command.ExecuteScalar();
                     con.Close();
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось добавить Новый адрес. Подробности ", error.Message,
+                    MessageBox.Show("Не удалось добавить Новый адрес.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда",
                         MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1,
                         MessageBoxOptions.DefaultDesktopOnly);
                     idadress = -1;
@@ -544,8 +523,7 @@ namespace JournalAccountingBlanqui
                 try
                 {
                     con.Open();
-                    FbCommand command = con.CreateCommand();
-                    command.CommandText = @"SELECT MAX(DESTINATION_ADRESS.ID) FROM DESTINATION_ADRESS";
+                    FbCommand command = new FbCommand(@"SELECT MAX(DESTINATION_ADRESS.ID) FROM DESTINATION_ADRESS", con);
                     FbDataReader dr = command.ExecuteReader();
 
                     dr.Read();
@@ -554,7 +532,7 @@ namespace JournalAccountingBlanqui
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Не удалось получить максимальное значение ID. Подробности ", error.Message, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Не удалось получить максимальное значение ID.\nПодробности: " + error.Message, "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             return idadress;

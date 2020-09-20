@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PropsFields xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<baseFileDir>VIKI:D:\Data\JUSTICE\BLANQUI.FDB</baseFileDir>
-	<systemUser>SYSDBA</systemUser>
-	<systemPassword>m</systemPassword>
-	<userLogin>Konnov</userLogin>
-	<userPassw></userPassw>
+	<BaseFileDir>VIKI:D:\Data\JUSTICE\BLANQUI.FDB</BaseFileDir>
+	<SystemUser>SYSDBA</SystemUser>
+	<SystemPassword>m</SystemPassword>
+	<UserLogin>Konnov</UserLogin>
+	<UserPassw>5449</UserPassw>
 </PropsFields>
