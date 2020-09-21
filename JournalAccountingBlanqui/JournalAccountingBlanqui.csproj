@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminCLSDB.cs" />
     <Compile Include="AdminForm.cs">
       <SubType>Form</SubType>
     </Compile>

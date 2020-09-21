@@ -50,7 +50,7 @@ namespace JournalAccountingBlanqui
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(131, 35);
-            this.btnLogin.TabIndex = 2;
+            this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "Авторизация";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
@@ -61,7 +61,7 @@ namespace JournalAccountingBlanqui
             this.btnCancel.Location = new System.Drawing.Point(326, 137);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 35);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
@@ -74,7 +74,7 @@ namespace JournalAccountingBlanqui
             this.label1.Location = new System.Drawing.Point(12, 74);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 20);
-            this.label1.TabIndex = 2;
+            this.label1.TabIndex = 5;
             this.label1.Text = "Логин";
             // 
             // label2
@@ -84,7 +84,7 @@ namespace JournalAccountingBlanqui
             this.label2.Location = new System.Drawing.Point(12, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 20);
-            this.label2.TabIndex = 3;
+            this.label2.TabIndex = 6;
             this.label2.Text = "Пароль";
             // 
             // txBxLogin
@@ -133,7 +133,7 @@ namespace JournalAccountingBlanqui
             this.chckBxRemember.Location = new System.Drawing.Point(12, 143);
             this.chckBxRemember.Name = "chckBxRemember";
             this.chckBxRemember.Size = new System.Drawing.Size(152, 24);
-            this.chckBxRemember.TabIndex = 7;
+            this.chckBxRemember.TabIndex = 2;
             this.chckBxRemember.Text = "запомнить меня";
             this.chckBxRemember.UseVisualStyleBackColor = false;
             // 
@@ -146,7 +146,7 @@ namespace JournalAccountingBlanqui
             this.label3.Location = new System.Drawing.Point(80, 21);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(260, 24);
-            this.label3.TabIndex = 8;
+            this.label3.TabIndex = 7;
             this.label3.Text = "Авторизация пользователя";
             // 
             // Authorization
