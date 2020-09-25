@@ -27,7 +27,7 @@ namespace JournalAccountingBlanqui
 
         public void Printing(int userID)
         {
-            dataset = clsdb.GetPrint(userID, statusPrint);
+            dataset = clsdb.GetPrint(userID);
             if (dataset.Tables.Count == 0)
             {
                 MessageBox.Show("Ошибка, результат не содежит строк");
@@ -80,7 +80,7 @@ namespace JournalAccountingBlanqui
                         wordDocument.Selection.Text = row[5].ToString();
                         wordDocument.Selection.Aligment = TextAligment.Center;
 
-                        clsdb.SetPrint(idjournal, "TRUE", DateTime.Now);
+                        clsdb.SetPrint(idjournal, DateTime.Now);
                     }
                     
                 }

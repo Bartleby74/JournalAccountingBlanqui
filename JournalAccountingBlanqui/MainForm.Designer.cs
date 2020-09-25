@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnAdm = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,12 +46,12 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txBxSearchNum = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.txBxSearchAdress = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txBxSearchNArray = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.txBxSearchName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.txBxSearchName = new System.Windows.Forms.TextBox();
+            this.txBxSearchAdress = new System.Windows.Forms.TextBox();
             this.btnReset = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dtGdVBlanqUse = new System.Windows.Forms.DataGridView();
@@ -95,7 +98,7 @@
             this.btnAdm.TabIndex = 17;
             this.btnAdm.Text = "Администрирование";
             this.btnAdm.UseVisualStyleBackColor = true;
-            this.btnAdm.Click += new System.EventHandler(this.btnAdm_Click);
+            this.btnAdm.Click += new System.EventHandler(this.BtnAdm_Click);
             // 
             // groupBox2
             // 
@@ -177,15 +180,6 @@
             this.label11.TabIndex = 33;
             this.label11.Text = "№ наряда";
             // 
-            // txBxSearchAdress
-            // 
-            this.txBxSearchAdress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txBxSearchAdress.Location = new System.Drawing.Point(374, 35);
-            this.txBxSearchAdress.Name = "txBxSearchAdress";
-            this.txBxSearchAdress.Size = new System.Drawing.Size(299, 26);
-            this.txBxSearchAdress.TabIndex = 3;
-            this.txBxSearchAdress.TextChanged += new System.EventHandler(this.TxBxSearchAdress_TextChanged);
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -215,15 +209,6 @@
             this.label9.TabIndex = 31;
             this.label9.Text = "Наименование бланка";
             // 
-            // txBxSearchName
-            // 
-            this.txBxSearchName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txBxSearchName.Location = new System.Drawing.Point(136, 35);
-            this.txBxSearchName.Name = "txBxSearchName";
-            this.txBxSearchName.Size = new System.Drawing.Size(232, 26);
-            this.txBxSearchName.TabIndex = 4;
-            this.txBxSearchName.TextChanged += new System.EventHandler(this.TxBxSearchName_TextChanged);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -233,6 +218,24 @@
             this.label8.Size = new System.Drawing.Size(127, 20);
             this.label8.TabIndex = 29;
             this.label8.Text = "Дата";
+            // 
+            // txBxSearchName
+            // 
+            this.txBxSearchName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchName.Location = new System.Drawing.Point(136, 35);
+            this.txBxSearchName.Name = "txBxSearchName";
+            this.txBxSearchName.Size = new System.Drawing.Size(232, 26);
+            this.txBxSearchName.TabIndex = 4;
+            this.txBxSearchName.TextChanged += new System.EventHandler(this.TxBxSearchName_TextChanged);
+            // 
+            // txBxSearchAdress
+            // 
+            this.txBxSearchAdress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txBxSearchAdress.Location = new System.Drawing.Point(374, 35);
+            this.txBxSearchAdress.Name = "txBxSearchAdress";
+            this.txBxSearchAdress.Size = new System.Drawing.Size(299, 26);
+            this.txBxSearchAdress.TabIndex = 3;
+            this.txBxSearchAdress.TextChanged += new System.EventHandler(this.TxBxSearchAdress_TextChanged);
             // 
             // btnReset
             // 
@@ -291,8 +294,8 @@
             this.dtGdVBlanqUse.Name = "dtGdVBlanqUse";
             this.dtGdVBlanqUse.ReadOnly = true;
             this.dtGdVBlanqUse.RowHeadersWidth = 18;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dtGdVBlanqUse.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dtGdVBlanqUse.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.dtGdVBlanqUse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dtGdVBlanqUse.Size = new System.Drawing.Size(1046, 191);
             this.dtGdVBlanqUse.TabIndex = 1;
@@ -516,6 +519,8 @@
             // Column0
             // 
             this.Column0.DataPropertyName = "ID";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column0.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column0.HeaderText = "ID";
             this.Column0.Name = "Column0";
             this.Column0.ReadOnly = true;
@@ -525,8 +530,8 @@
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column1.DataPropertyName = "DATE_USE";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column1.FillWeight = 45F;
             this.Column1.HeaderText = "Дата";
             this.Column1.Name = "Column1";
@@ -536,8 +541,8 @@
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.DataPropertyName = "NAME_BLANK";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column2.FillWeight = 80F;
             this.Column2.HeaderText = "Наименование бланка";
             this.Column2.Name = "Column2";
@@ -547,8 +552,8 @@
             // 
             this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column3.DataPropertyName = "ADRESS";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle5;
             this.Column3.HeaderText = "Место назначения";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
@@ -557,8 +562,8 @@
             // 
             this.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column4.DataPropertyName = "ARRAY_NUMBER";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column4.DefaultCellStyle = dataGridViewCellStyle6;
             this.Column4.FillWeight = 32F;
             this.Column4.HeaderText = "№ наряда";
             this.Column4.Name = "Column4";
@@ -568,8 +573,8 @@
             // 
             this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column5.DataPropertyName = "NUM_BLANK";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column5.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column5.DefaultCellStyle = dataGridViewCellStyle7;
             this.Column5.FillWeight = 32F;
             this.Column5.HeaderText = "№ бланка";
             this.Column5.Name = "Column5";
@@ -577,8 +582,10 @@
             // 
             // Column6
             // 
-            this.Column6.DataPropertyName = "PRINT";
-            this.Column6.HeaderText = "Print";
+            this.Column6.DataPropertyName = "PRINTED";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Column6.DefaultCellStyle = dataGridViewCellStyle8;
+            this.Column6.HeaderText = "Printed";
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
             this.Column6.Visible = false;
@@ -586,6 +593,8 @@
             // Column7
             // 
             this.Column7.DataPropertyName = "DATE_PRINT";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Column7.DefaultCellStyle = dataGridViewCellStyle9;
             this.Column7.HeaderText = "Дата печати";
             this.Column7.Name = "Column7";
             this.Column7.ReadOnly = true;

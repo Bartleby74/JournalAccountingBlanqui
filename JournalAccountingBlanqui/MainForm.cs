@@ -39,7 +39,8 @@ namespace JournalAccountingBlanqui
         {
             this.Enabled = false; 
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            reportPrinting.Printing(props.Fields.UserID); 
+            reportPrinting.Printing(props.Fields.UserID);
+            UpdSpisok();
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Enabled = true;
         }
@@ -191,12 +192,12 @@ namespace JournalAccountingBlanqui
             {
                 dtGdVBlanqUse.Columns[6].Visible = false;
                 rowID = 0;
-                idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[0].Cells[0].Value);
-                dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[0].Cells[1].Value.ToString());
-                cmBxName.Text = dtGdVBlanqUse.Rows[0].Cells[2].Value.ToString();
-                cmBxAdress.Text = dtGdVBlanqUse.Rows[0].Cells[3].Value.ToString();
-                txBxN_Array.Text = dtGdVBlanqUse.Rows[0].Cells[4].Value.ToString();
-                txBxNum.Text = dtGdVBlanqUse.Rows[0].Cells[5].Value.ToString();
+                idtab = Convert.ToInt32(dtGdVBlanqUse.Rows[rowID].Cells[0].Value);
+                dateTimePickerDispatch.Value = Convert.ToDateTime(dtGdVBlanqUse.Rows[rowID].Cells[1].Value.ToString());
+                cmBxName.Text = dtGdVBlanqUse.Rows[rowID].Cells[2].Value.ToString();
+                cmBxAdress.Text = dtGdVBlanqUse.Rows[rowID].Cells[3].Value.ToString();
+                txBxN_Array.Text = dtGdVBlanqUse.Rows[rowID].Cells[4].Value.ToString();
+                txBxNum.Text = dtGdVBlanqUse.Rows[rowID].Cells[5].Value.ToString();
             }
             else
             {
@@ -325,12 +326,10 @@ namespace JournalAccountingBlanqui
             cmBxAdress.SelectionLength = 0;
         }
 
-        private void btnAdm_Click(object sender, EventArgs e)
+        private void BtnAdm_Click(object sender, EventArgs e)
         {
             using (AdminForm Form = new AdminForm())
             {
-                
-
                 Form.ShowDialog();
             }
         }
