@@ -1,8 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PropsFields xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<PropsFields xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ConnectionString>server type=Embedded;initial catalog=VIKI:D:\Data\JUSTICE\BLANQUI.FDB;character set=WIN1251;dialect=3;user id=SYSDBA;password=m</ConnectionString>
 	<BaseFileDir>VIKI:D:\Data\JUSTICE\BLANQUI.FDB</BaseFileDir>
+	<!--
+	<ConnectionString>server type=Embedded;initial catalog=K19N02:D:\Data\JUSTICE\BLANQUI.FDB;character set=WIN1251;dialect=3;user id=SYSDBA;password=m</ConnectionString>
+	<BaseFileDir>K19N02:D:\Data\JUSTICE\BLANQUI.FDB</BaseFileDir>
+	-->
+	<DateSelect>2020-09-25T02:44:21.9293138+03:00</DateSelect>
 	<SystemUser>SYSDBA</SystemUser>
 	<SystemPassword>m</SystemPassword>
 	<UserLogin>Konnov</UserLogin>
 	<UserPassw>5449</UserPassw>
+	<UserID>1</UserID>
+	<UserFIO>Коннов Владимир Викторович</UserFIO>
+	<UserOffice>Консультант суда</UserOffice>
+	<UserStatus>admin</UserStatus>
+	<SelectRow>0</SelectRow>
 </PropsFields>

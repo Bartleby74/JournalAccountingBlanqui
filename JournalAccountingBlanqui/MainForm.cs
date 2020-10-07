@@ -17,6 +17,7 @@ namespace JournalAccountingBlanqui
         ReportPrinting reportPrinting = new ReportPrinting();
         public int idtab = 0;
         int rowID = 0;
+        bool modify = false;
 
         public MainForm()
         {
@@ -25,6 +26,7 @@ namespace JournalAccountingBlanqui
 
         private void BtnModify_Click(object sender, EventArgs e)
         {
+            modify = true;
             if (dtGdVBlanqUse.Rows[rowID].Cells[6].Value.ToString() == "0")
             {
                 EnableEditMode(); 
@@ -58,7 +60,7 @@ namespace JournalAccountingBlanqui
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            if (idtab == 0) // Выполняется при добавлении бланка
+            if (!modify) // Выполняется при добавлении бланка
             {
                 if (dateTimePickerDispatch.Value == null | cmBxName.Text == "" | cmBxAdress.Text == "" | txBxN_Array.Text == "" | txBxNum.Text == "") //Проверка на заполнение полей
                 {
@@ -124,10 +126,12 @@ namespace JournalAccountingBlanqui
             }
 
             DisableEditMode();
+            modify = false;
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
+            modify = false;
             EnableEditMode();
             idtab = 0;
             dateTimePickerDispatch.Value = DateTime.Now;
@@ -316,9 +320,10 @@ namespace JournalAccountingBlanqui
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Вы действительно желаете закрыть приложение?", "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                e.Cancel = false;
-            else e.Cancel = true;
+            //if (MessageBox.Show("Вы действительно желаете закрыть приложение?", "Журнал учёта бланков и распорядительных документов суда", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            //    e.Cancel = false;
+            //else e.Cancel = true;
+            e.Cancel = false;
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -332,6 +337,11 @@ namespace JournalAccountingBlanqui
             {
                 Form.ShowDialog();
             }
+        }
+
+        private void dtGdVBlanqUse_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            PaintRows();
         }
     }
 }
