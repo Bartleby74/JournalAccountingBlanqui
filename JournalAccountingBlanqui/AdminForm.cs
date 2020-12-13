@@ -341,23 +341,31 @@ namespace JournalAccountingBlanqui
 
         private void TxBxSearchIssueDate_TextChanged(object sender, EventArgs e)
         {
-            // (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%' AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
+            (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%'"; // AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
         }
 
         private void TxBxSearchIssueFIO_TextChanged(object sender, EventArgs e)
         {
-           // (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%' AND FIRST_BLANK <= " + Convert.ToInt32(txBxSearchIssueNum.Text.Trim() ?? "0") + " AND LAST_BLANK >= " + Convert.ToInt32(txBxSearchIssueNum.Text.Trim() ?? "0"); //System.
+            (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%'"; // AND FIRST_BLANK <= " + Convert.ToInt32(txBxSearchIssueNum.Text.Trim() ?? "0") + " AND LAST_BLANK >= " + Convert.ToInt32(txBxSearchIssueNum.Text.Trim() ?? "0"); //System.
             
         }
 
         private void TxBxSearchIssueNBlank_TextChanged(object sender, EventArgs e)
         {
-            // (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%' AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
+            (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%'"; // AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
         }
 
         private void TxBxSearchIssueNum_TextChanged(object sender, EventArgs e)
         {
-            // (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%' AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
+            if (txBxSearchIssueNum.TextLength >= 3)
+            {
+                (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + txBxSearchIssueDate.Text.Trim() + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%' AND CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'";
+                //(dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(FIRST_BLANK, System.Int32) <= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "' AND CONVERT(LAST_BLANK, System.Int32) >= '" + Convert.ToInt32(txBxSearchIssueNum.Text.Trim()) + "'"; 
+            }
+            else
+            {
+                (dtGridViewIssueBlanq.DataSource as DataTable).DefaultView.RowFilter = "CONVERT(DATEOFISSUE, System.String) LIKE '%" + (txBxSearchIssueDate.Text.Trim()) + "%' AND FIO LIKE '%" + txBxSearchIssueFIO.Text.Trim() + "%' AND NAME_BLANK LIKE '%" + txBxSearchIssueNBlank.Text.Trim() + "%'";
+            }
         }
 
         private void BtnSearchResetIssuing_Click(object sender, EventArgs e)
